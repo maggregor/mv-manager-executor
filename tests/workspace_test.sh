@@ -2,10 +2,8 @@ echo '{
     "message": {
         "attributes": {
             "accessToken": "accessTokenValue",
-            "cmdType": "apply",
-            "projectId": "myprojectid",
-            "regionId": "myregion",
-            "datasetId": "mydataset"
+            "cmdType": "workspace",
+            "projectId": "achilio-dev"
         },
         "data": "SGVsbG8gQ2xvdWQgUHViL1N1YiEgSGVyZSBpcyBteSBtZXNzYWdlIQ==",
         "messageId": "2070443601311540",

@@ -28,10 +28,15 @@ RUN set -x && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -
     rm -rf /var/lib/apt/lists/*
 
 # Install Terraform
-ENV TERRAFORM_VERSION=0.15.4
-ENV TERRAFORM_DIR /app/terraform
+ENV TERRAFORM_VERSION 0.15.4
+ENV TERRAFORM_DIR /terraform
+# ENV AWS_ACCESS_KEY_ID AKIAVDPMDK72CF54NZUH
+# ENV AWS_SECRET_ACCESS_KEY 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
 RUN wget https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
 RUN unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip -d /bin && rm -f terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+COPY --from=builder /app/terraform ${TERRAFORM_DIR}
+WORKDIR ${TERRAFORM_DIR}
+RUN terraform init
 
 # Copy the binary to the production image from the builder stage.
 COPY --from=builder /app/server /server

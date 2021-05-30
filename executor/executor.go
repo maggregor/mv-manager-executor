@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"hash/fnv"
+	"log"
 	"os"
 	"os/exec"
 	"strings"
@@ -18,7 +19,6 @@ type TerraformExecutor interface {
 	setQueries()
 	setCommand()
 	executeShell() error
-	executeCommand() error
 }
 
 const (
@@ -62,7 +62,10 @@ func hash(s string) string {
 
 func executeCommand(c string) error {
 	commandArray := strings.Split(c, " ")
-	cmd := exec.Command(commandArray[0], commandArray...)
+	log.Println(commandArray)
+	mainCommand := commandArray[0]
+	args := commandArray[1:]
+	cmd := exec.Command(mainCommand, args...)
 	cmd.Dir = os.Getenv("TERRAFORM_DIR")
 	stdoutStderr, err := cmd.CombinedOutput()
 	fmt.Printf("%s\n", stdoutStderr)

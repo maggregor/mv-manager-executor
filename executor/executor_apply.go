@@ -4,8 +4,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"os/exec"
-	"strings"
 )
 
 type ApplyExecutor struct {
@@ -22,7 +20,7 @@ func (e *ApplyExecutor) executeShell() error {
 	tmpE.setCommand()
 	log.Printf("Executing: %q\n", tmpE.Command)
 	// TODO: Uncomment next line when terraform module is added
-	// executeCommand(e.Command)
+	executeCommand(tmpE.Command)
 	// Create the var file
 	err := e.createVarFile()
 	if err != nil {
@@ -32,19 +30,7 @@ func (e *ApplyExecutor) executeShell() error {
 	e.setCommand()
 	log.Printf("Executing: %q\n", e.Command)
 	// TODO: Uncomment next line when terraform module is added
-	// executeCommand(e.Command)
-	return nil
-}
-
-func (e *ApplyExecutor) executeCommand() error {
-	commandArray := strings.Split(e.Command, " ")
-	cmd := exec.Command(commandArray[0], commandArray...)
-	cmd.Dir = os.Getenv("TERRAFORM_DIR")
-	stdoutStderr, err := cmd.CombinedOutput()
-	fmt.Printf("%s\n", stdoutStderr)
-	if err != nil {
-		return err
-	}
+	executeCommand(e.Command)
 	return nil
 }
 

@@ -34,8 +34,9 @@ Documentation to send messages via Pub/Sub in Java (and many other languages): h
 
 For the mv-manager-executor to work, the message must have the following attributes:
 
-- "cmdType": enum("apply", "workspace)
+- "cmdType": enum("apply", "workspace")
 - "projectId": string
+- "queries": list[string] // Not required if cmdType is workspace
 - "regionId": string // Not required if cmdType is workspace
 - "datasetId": string // Not required if cmdType is workspace
 - "accessToken: string // Not required for testing purpose, but will be when in production. If not provided, you need to have a way to pass credentials to the executor with a json service account file.
