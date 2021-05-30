@@ -9,7 +9,7 @@
 
 ```
 docker build -t local/mv-manager-executor .
-docker run local/mv-manager-executor -p 8080
+docker run -p 8080 local/mv-manager-executor
 ```
 
 ## Send a notification

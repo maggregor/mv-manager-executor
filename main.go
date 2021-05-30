@@ -1,4 +1,3 @@
-// Sample run-pubsub is a Cloud Run service which handles Pub/Sub messages.
 package main
 
 import (
