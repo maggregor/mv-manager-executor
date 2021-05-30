@@ -1,10 +1,7 @@
 package executor
 
 import (
-	"fmt"
-	"os"
-	"os/exec"
-	"strings"
+	"log"
 )
 
 type WorkspaceExecutor struct {
@@ -16,20 +13,8 @@ type WorkspaceExecutor struct {
 func (e *WorkspaceExecutor) executeShell() error {
 	e.setCommand()
 	// TODO: Uncomment next line when terraform module is added
-	// executeCommand(e.Command)
-	fmt.Printf("Executing: %q\n", e.Command)
-	return nil
-}
-
-func (e *WorkspaceExecutor) executeCommand() error {
-	commandArray := strings.Split(e.Command, " ")
-	cmd := exec.Command(commandArray[0], commandArray...)
-	cmd.Dir = os.Getenv("TERRAFORM_DIR")
-	stdoutStderr, err := cmd.CombinedOutput()
-	fmt.Printf("%s\n", stdoutStderr)
-	if err != nil {
-		return err
-	}
+	executeCommand(e.Command)
+	log.Printf("Executing: %q\n", e.Command)
 	return nil
 }
 

@@ -28,13 +28,16 @@ RUN set -x && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -
     rm -rf /var/lib/apt/lists/*
 
 # Install Terraform
-ENV TERRAFORM_VERSION=0.15.4
-ENV TERRAFORM_DIR /app/terraform
+ENV TERRAFORM_VERSION 0.15.4
+ENV TERRAFORM_DIR /terraform
 RUN wget https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
 RUN unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip -d /bin && rm -f terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+COPY --from=builder /app/terraform ${TERRAFORM_DIR}
+WORKDIR ${TERRAFORM_DIR}
 
 # Copy the binary to the production image from the builder stage.
 COPY --from=builder /app/server /server
+COPY --from=builder /app/docker-entrypoint.sh /docker-entrypoint.sh
 
 # Run the web service on container startup.
-CMD ["/server"]
+CMD ["/docker-entrypoint.sh"]
