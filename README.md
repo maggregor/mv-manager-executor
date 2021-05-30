@@ -3,7 +3,7 @@
 ## Roadmap
 
 - [x] Handling notification message to build the command to execute
-- [] Add terraform module to actually execute
+- [ ] Add terraform module to actually execute
 
 ## Run locally
 
@@ -14,7 +14,13 @@ docker run local/mv-manager-executor -p 8080
 
 ## Send a notification
 
+Locally
+
 `./local_test.sh`
+
+Remotely
+
+`./remote_test.sh`
 
 ## Deploy on GCP
 
