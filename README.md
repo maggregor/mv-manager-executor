@@ -3,7 +3,7 @@
 ## Roadmap
 
 - [x] Handling notification message to build the command to execute
-- [ ] Add terraform module to actually execute
+- [x] Add terraform module to actually execute
 
 ## Run locally
 

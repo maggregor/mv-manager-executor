@@ -1,3 +1,1 @@
-
-gcloud pubsub topics publish mvExecutorTopic --message "Runner" --attribute="cmdType"="workspace","projectId"="myproject"
-# gcloud pubsub topics publish mvExecutorTopic --message "Runner" --attribute=^:^"cmdType"="apply":"projectId"="achilio-dev":"regionId"="europe-west-1":"datasetId"="nyc_trips":"queries"="[SELECT payment_type, SUM(total_amount) as col1 FROM achilio-dev.nyc_trips.tlc_yellow_trips_2015_small GROUP BY payment_type]"
+gcloud pubsub topics publish mvExecutorTopic --message "Runner" --attribute="cmdType"="workspace","projectId"="myproject","regionId"="myregion","datasetId"="mydataset"
