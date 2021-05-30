@@ -1,0 +1,6 @@
+tests
+.vscode/
+.terraform/
+.gcloudignore
+.git
+.gitignore

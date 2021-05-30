@@ -9,7 +9,7 @@
 
 ```
 docker build -t local/mv-manager-executor .
-docker run -p 8080 local/mv-manager-executor
+docker run -it -e AWS_ACCESS_KEY_ID=<AWS_ACCESS_KEY> -e AWS_SECRET_ACCESS_KEY=<AWS_SECRET_KEY> -p 8080 local/mv-manager-executor
 ```
 
 ## Send a notification

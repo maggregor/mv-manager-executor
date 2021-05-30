@@ -9,5 +9,5 @@ steps:
 # Deploy container image to Cloud Run  
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   entrypoint: gcloud
-  args: ['run', 'deploy', 'mvm-executor', '--image', 'gcr.io/achilio-dev/mvm-executor', '--update-secrets=AWS_ACCESS_KEY_ID=achilio-dev-aws-access-key:1,AWS_SECRET_ACCES_KEY=achilio-dev-aws-secret-key:1' '--region', 'europe-west1', '--platform', 'managed']
+  args: ['beta', 'run', 'deploy', 'mvm-executor', '--image', 'gcr.io/achilio-dev/mvm-executor', '--update-secrets=AWS_ACCESS_KEY_ID=achilio-dev-aws-access-key:1,AWS_SECRET_ACCES_KEY=achilio-dev-aws-secret-key:1', '--region', 'europe-west1', '--platform', 'managed']
 images: ['gcr.io/achilio-dev/mvm-executor']
