@@ -11,6 +11,7 @@ import (
 )
 
 type Terraform struct {
+	Message    Message
 	Attributes Attributes
 	Executor   TerraformExecutor
 }

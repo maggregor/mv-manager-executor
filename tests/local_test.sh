@@ -5,10 +5,9 @@ echo '{
             "cmdType": "apply",
             "projectId": "myprojectid",
             "regionId": "myregion",
-            "datasetId": "mydataset",
-            "queries": ["SELECT 1", "SELECT 2"]
+            "datasetId": "mydataset"
         },
-        "data": "SGVsbG8gQ2xvdWQgUHViL1N1YiEgSGVyZSBpcyBteSBtZXNzYWdlIQ==",
+        "data": "SELECT vendor_id FROM achilio-dev.nyc_trips.tlc_yellow_trips_2015_small GROUP BY vendor_id",
         "messageId": "2070443601311540",
         "message_id": "2070443601311540",
         "publishTime": "2021-02-26T19:13:55.749Z",

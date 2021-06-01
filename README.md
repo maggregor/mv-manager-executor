@@ -9,7 +9,7 @@
 
 ```
 docker build -t local/mv-manager-executor .
-docker run -it -e AWS_ACCESS_KEY_ID=<AWS_ACCESS_KEY> -e AWS_SECRET_ACCESS_KEY=<AWS_SECRET_KEY> -p 8080 local/mv-manager-executor
+docker run -it -p 8080:8080 -e AWS_ACCESS_KEY_ID=<AWS_ACCESS_KEY> -e AWS_SECRET_ACCESS_KEY=<AWS_SECRET_KEY> -p 8080 local/mv-manager-executor
 ```
 
 ## Send a notification
@@ -36,7 +36,11 @@ For the mv-manager-executor to work, the message must have the following attribu
 
 - "cmdType": enum("apply", "workspace")
 - "projectId": string
-- "queries": list[string] // Not required if cmdType is workspace
 - "regionId": string // Not required if cmdType is workspace
 - "datasetId": string // Not required if cmdType is workspace
 - "accessToken: string // Not required for testing purpose, but will be when in production. If not provided, you need to have a way to pass credentials to the executor with a json service account file.
+
+The message data is a list of ; separated SELECT queries representing the views to create.
+
+Eg. data: "SELECT vendor_id FROM achilio-dev.nyc_trips.tlc_yellow_trips_2015_small GROUP BY vendor_id;SELECT payment_type, SUM(total_amount) as col1 FROM achilio-dev.nyc_trips.tlc_yellow_trips_2015_small GROUP BY payment_type"
+

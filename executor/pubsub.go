@@ -50,6 +50,6 @@ func PubSub(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	t := Terraform{m.Message.Attributes, nil}
+	t := Terraform{m.Message, m.Message.Attributes, nil}
 	err = t.Execute()
 }
