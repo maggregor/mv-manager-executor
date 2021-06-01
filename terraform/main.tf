@@ -14,11 +14,15 @@ variable "queries" {
   type = map
 }
 
+variable "access_token" {
+  type = string
+}
+
 provider "google" {
   project     = var.project_id
   region      = var.region_id
-  credentials = "/home/nico/Workspace/Achilio/dev/achilio-dev-919cf3ede1d0.json"
-  #   access_token = "ya29.a0AfH6SMDvPkDfUqxyeE0G6TjdxLHVpj4ECCr20oHHoNx1ox9ICu3D006xicIGtjRx6AJye1_1p5k-J7AMvzea74UdK0J95MX_n_Sul1oha6sm789aQiEDTqcYj8xHXTBtfOEWHfLngst5vn-xgo2LHAXbGsW0"
+  # credentials = "/home/nico/Workspace/Achilio/dev/achilio-dev-919cf3ede1d0.json"
+  access_token = var.access_token
 }
 
 terraform {

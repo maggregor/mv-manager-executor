@@ -19,7 +19,6 @@ func (e *ApplyExecutor) executeShell() error {
 	tmpE := WorkspaceExecutor{Attributes: e.Attributes}
 	tmpE.setCommand()
 	log.Printf("Executing: %q\n", tmpE.Command)
-	// TODO: Uncomment next line when terraform module is added
 	executeCommand(tmpE.Command)
 	// Create the var file
 	err := e.createVarFile()
@@ -29,7 +28,6 @@ func (e *ApplyExecutor) executeShell() error {
 	// Execute the apply command
 	e.setCommand()
 	log.Printf("Executing: %q\n", e.Command)
-	// TODO: Uncomment next line when terraform module is added
 	executeCommand(e.Command)
 	return nil
 }
@@ -59,12 +57,13 @@ func (e *ApplyExecutor) toString() string {
 	r = fmt.Sprintf("project_id = %q\n", e.Attributes.ProjectID)
 	r += fmt.Sprintf("region_id = %q\n", e.Attributes.RegionID)
 	r += fmt.Sprintf("dataset_id = %q\n", e.Attributes.DatasetID)
+	r += fmt.Sprintf("access_token = %q\n", e.Attributes.AccessToken)
 	r += "queries = {\n"
 	for _, q := range e.Queries {
 		r += fmt.Sprintf("\t%q: %q,\n", q.MvmName, q.QueryContent)
 	}
 	r += "\t}\n"
-
+	log.Println(r)
 	return r
 }
 
