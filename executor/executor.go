@@ -11,9 +11,8 @@ import (
 )
 
 type Terraform struct {
-	Message    Message
-	Attributes Attributes
-	Executor   TerraformExecutor
+	Message  Message
+	Executor TerraformExecutor
 }
 
 type TerraformExecutor interface {
@@ -39,13 +38,13 @@ func (t *Terraform) Execute() error {
 }
 
 func (t *Terraform) init() error {
-	switch t.Attributes.CmdType {
+	switch t.Message.Attributes.CmdType {
 	case WORKSPACE:
-		t.Executor = &WorkspaceExecutor{t.Attributes, ""}
+		t.Executor = &WorkspaceExecutor{t.Message.Attributes, ""}
 	case APPLY:
-		t.Executor = &ApplyExecutor{t.Attributes, "", nil, ""}
+		t.Executor = &ApplyExecutor{t.Message.Attributes, "", nil, ""}
 	default:
-		return errors.New("Unsupported command " + t.Attributes.CmdType)
+		return errors.New("Unsupported command " + t.Message.Attributes.CmdType)
 	}
 	return nil
 }

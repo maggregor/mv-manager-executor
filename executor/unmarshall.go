@@ -12,7 +12,7 @@ import (
 func (message *Message) UnmarshalJSON(data []byte) (err error) {
 	// m := string(data)
 	messageData := struct {
-		Data       string     `json:"data,omitempty"`
+		Data       []byte     `json:"data,omitempty"`
 		Attributes Attributes `json:"attributes,omitempty"`
 	}{}
 	err = json.Unmarshal(data, &messageData)
@@ -20,11 +20,16 @@ func (message *Message) UnmarshalJSON(data []byte) (err error) {
 		return
 	}
 	// Removing empty queries
-	filtered := FilterEmpty(strings.Split(messageData.Data, ";"), func(query string) bool {
+	queries := strings.Split(string(messageData.Data), ";")
+	filtered := FilterEmpty(queries, func(query string) bool {
 		return query != ""
 	})
 	message.Attributes.Queries = filtered
-	message.Attributes = messageData.Attributes
+	message.Attributes.AccessToken = messageData.Attributes.AccessToken
+	message.Attributes.CmdType = messageData.Attributes.CmdType
+	message.Attributes.ProjectID = messageData.Attributes.ProjectID
+	message.Attributes.RegionID = messageData.Attributes.RegionID
+	message.Attributes.DatasetID = messageData.Attributes.DatasetID
 	return
 }
 

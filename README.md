@@ -34,13 +34,16 @@ Documentation to send messages via Pub/Sub in Java (and many other languages): h
 
 For the mv-manager-executor to work, the message must have the following attributes:
 
-- "cmdType": enum("apply", "workspace")
+- "cmdType": enum("apply", "workspace") // Apply is for creating a new set of views. Workspace is for creating a new workspace (new project activated)
 - "projectId": string
+- "accessToken: string
 - "regionId": string // Not required if cmdType is workspace
 - "datasetId": string // Not required if cmdType is workspace
-- "accessToken: string // Not required for testing purpose, but will be when in production. If not provided, you need to have a way to pass credentials to the executor with a json service account file.
 
-The message data is a list of ; separated SELECT queries representing the views to create.
+The message data is a list of ; separated SELECT queries representing the views to create. The message is sent as a base64 encoded string when using PubSub with the Google SDK or gcloud. But if you are sending the message locally with a direct HTTP request, you need to encode the string in base64 beforehand
 
-Eg. data: "SELECT vendor_id FROM achilio-dev.nyc_trips.tlc_yellow_trips_2015_small GROUP BY vendor_id;SELECT payment_type, SUM(total_amount) as col1 FROM achilio-dev.nyc_trips.tlc_yellow_trips_2015_small GROUP BY payment_type"
+Eg. for "SELECT vendor_id FROM achilio-dev.nyc_trips.tlc_yellow_trips_2015_small GROUP BY vendor_id;SELECT payment_type, SUM(total_amount) as col1 FROM achilio-dev.nyc_trips.tlc_yellow_trips_2015_small GROUP BY payment_type"
 
+```
+data: "U0VMRUNUIHZlbmRvcl9pZCBGUk9NIGFjaGlsaW8tZGV2Lm55Y190cmlwcy50bGNfeWVsbG93X3RyaXBzXzIwMTVfc21hbGwgR1JPVVAgQlkgdmVuZG9yX2lkO1NFTEVDVCBwYXltZW50X3R5cGUsIFNVTSh0b3RhbF9hbW91bnQpIGFzIGNvbDEgRlJPTSBhY2hpbGlvLWRldi5ueWNfdHJpcHMudGxjX3llbGxvd190cmlwc18yMDE1X3NtYWxsIEdST1VQIEJZIHBheW1lbnRfdHlwZQ=="
+```
