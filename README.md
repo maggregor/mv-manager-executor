@@ -38,7 +38,7 @@ For the mv-manager-executor to work, the message must have the following attribu
 - "projectId": string
 - "accessToken: string
 - "regionId": string // Not required if cmdType is workspace
-- "datasetId": string // Not required if cmdType is workspace
+- "datasetName": string // Not required if cmdType is workspace
 
 The message data is a list of ; separated SELECT queries representing the views to create. The message is sent as a base64 encoded string when using PubSub with the Google SDK or gcloud. But if you are sending the message locally with a direct HTTP request, you need to encode the string in base64 beforehand
 

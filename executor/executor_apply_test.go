@@ -7,7 +7,7 @@ import (
 
 func TestSetQueries1(t *testing.T) {
 	i1 := []string{"SELECT 1", "SELECT 2"}
-	a1 := Attributes{AccessToken: "myAccessToken", ProjectID: "myprojectid", RegionID: "myregionid", DatasetID: "mydatasetid", Queries: i1}
+	a1 := Attributes{AccessToken: "myAccessToken", ProjectID: "myprojectid", RegionID: "myregionid", DatasetName: "mydatasetname", Queries: i1}
 	m1 := Message{Attributes: a1}
 	t1 := Terraform{Message: m1, Executor: nil}
 	executor := &ApplyExecutor{t1.Message.Attributes, "", nil, ""}

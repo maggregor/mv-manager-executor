@@ -6,7 +6,7 @@ echo '{
             "cmdType": "apply",
             "projectId": "achilio-dev",
             "regionId": "europe-west-1",
-            "datasetId": "nyc_trips"
+            "datasetName": "nyc_trips"
         },
         "data": "U0VMRUNUIHBheW1lbnRfdHlwZSwgU1VNKHRvdGFsX2Ftb3VudCkgYXMgY29sMSBGUk9NIGFjaGlsaW8tZGV2Lm55Y190cmlwcy50bGNfeWVsbG93X3RyaXBzXzIwMTVfc21hbGwgR1JPVVAgQlkgcGF5bWVudF90eXBl",
         "messageId": "2070443601311540",

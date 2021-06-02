@@ -56,7 +56,7 @@ func (e *ApplyExecutor) toString() string {
 	var r string
 	r = fmt.Sprintf("project_id = %q\n", e.Attributes.ProjectID)
 	r += fmt.Sprintf("region_id = %q\n", e.Attributes.RegionID)
-	r += fmt.Sprintf("dataset_id = %q\n", e.Attributes.DatasetID)
+	r += fmt.Sprintf("dataset_name = %q\n", e.Attributes.DatasetName)
 	r += fmt.Sprintf("access_token = %q\n", e.Attributes.AccessToken)
 	r += "queries = {\n"
 	for _, q := range e.Queries {

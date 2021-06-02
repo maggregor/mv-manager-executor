@@ -29,7 +29,7 @@ func (message *Message) UnmarshalJSON(data []byte) (err error) {
 	message.Attributes.CmdType = messageData.Attributes.CmdType
 	message.Attributes.ProjectID = messageData.Attributes.ProjectID
 	message.Attributes.RegionID = messageData.Attributes.RegionID
-	message.Attributes.DatasetID = messageData.Attributes.DatasetID
+	message.Attributes.DatasetName = messageData.Attributes.DatasetName
 	return
 }
 
@@ -47,16 +47,16 @@ func FilterEmpty(vs []string, f func(string) bool) []string {
 // UnmarshalJSON Custom unmarshall method for Attributes to check that the payload is valid for terraform executor
 func (attribute *Attributes) UnmarshalJSON(data []byte) (err error) {
 	required := struct {
-		ProjectID string `json:"projectId"`
-		RegionID  string `json:"regionId"`
-		DatasetID string `json:"datasetId"`
-		CmdType   string `json:"cmdType"`
+		ProjectID   string `json:"projectId"`
+		RegionID    string `json:"regionId"`
+		DatasetName string `json:"datasetName"`
+		CmdType     string `json:"cmdType"`
 	}{}
 	all := struct {
 		AccessToken string `json:"accessToken,omitempty"`
 		ProjectID   string `json:"projectId"`
 		RegionID    string `json:"regionId"`
-		DatasetID   string `json:"datasetId"`
+		DatasetName string `json:"datasetName"`
 		CmdType     string `json:"cmdType"`
 	}{}
 	err = json.Unmarshal(data, &required)
@@ -69,15 +69,15 @@ func (attribute *Attributes) UnmarshalJSON(data []byte) (err error) {
 		err = fmt.Errorf("projectId is required")
 	} else if required.RegionID == "" && required.CmdType == APPLY {
 		err = fmt.Errorf("regionId is required when command is apply")
-	} else if required.DatasetID == "" && required.CmdType == APPLY {
-		err = fmt.Errorf("datasetId is required when command is apply")
+	} else if required.DatasetName == "" && required.CmdType == APPLY {
+		err = fmt.Errorf("datasetName is required when command is apply")
 	} else {
 		err = json.Unmarshal(data, &all)
 		attribute.AccessToken = all.AccessToken
 		attribute.CmdType = all.CmdType
 		attribute.ProjectID = all.ProjectID
 		attribute.RegionID = all.RegionID
-		attribute.DatasetID = all.DatasetID
+		attribute.DatasetName = all.DatasetName
 	}
 	return
 }
