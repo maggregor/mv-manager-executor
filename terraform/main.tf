@@ -6,7 +6,7 @@ variable "region_id" {
   type = string
 }
 
-variable "dataset_id" {
+variable "dataset_name" {
   type = string
 }
 
@@ -20,7 +20,7 @@ variable "access_token" {
 
 provider "google" {
   project     = var.project_id
-  region      = var.region_id
+  # region      = var.region_id
   # credentials = "/home/nico/Workspace/Achilio/dev/achilio-dev-919cf3ede1d0.json"
   access_token = var.access_token
 }
@@ -34,7 +34,7 @@ terraform {
 }
 
 resource "google_bigquery_table" "mmv" {
-  dataset_id          = var.dataset_id
+  dataset_id          = var.dataset_name
   for_each            = var.queries
   table_id            = each.key
   deletion_protection = false

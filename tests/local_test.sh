@@ -2,7 +2,7 @@
 echo '{
     "message": {
         "attributes": {
-            "accessToken": "ya29.a0AfH6SMBT8SvdIL0dPSWPu_-WrLJ3l1eKIMT_PxocbY-WM11qQ_N_duU93dlfdi6MTMFMki8pLHfr7gFxak0ay8bh1zgKjnlNSormllvhjj7Z86dLsl9_zOydAh17jRLNM4k7BhoSw9kDOfQbpjpaXcsuT9yn_Q",
+            "accessToken": "ya29.a0AfH6SMCjKBDd8QSNQ4zG6yivWNuSFiGkxsjnlstUE28XsQLxjxZ1ls0G2Sl1G3zb8ktn6ZGiy5yV7Q6O8LxncK5EhAeAIcawK1P409DG8WLxxtyJoL3B-bJ5ZHsA5jKLWP1Z09gUgVZZ2HabWAU1gOKji0guHw",
             "cmdType": "apply",
             "projectId": "achilio-dev",
             "regionId": "europe-west-1",

@@ -1,6 +1,6 @@
 project_id = "achilio-dev"
 region_id = "europe-west-1"
-dataset_id = "nyc_trips"
+dataset_name = "nyc_trips"
 queries = {
             "mvm_2986072985": "SELECT vendor_id FROM achilio-dev.nyc_trips.tlc_yellow_trips_2015_small GROUP BY vendor_id",
             "mvm_2720750463": "SELECT payment_type, SUM(total_amount) as col1 FROM achilio-dev.nyc_trips.tlc_yellow_trips_2015_small GROUP BY payment_type",
