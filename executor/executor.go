@@ -4,10 +4,11 @@ import (
 	"errors"
 	"fmt"
 	"hash/fnv"
-	"log"
 	"os"
 	"os/exec"
 	"strings"
+
+	"github.com/acarl005/stripansi"
 )
 
 type Terraform struct {
@@ -33,7 +34,9 @@ func (t *Terraform) Execute() error {
 	}
 	t.Executor.setQueries()
 	t.Executor.setCommand()
-	t.Executor.executeShell()
+	if err := t.Executor.executeShell(); err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -62,13 +65,13 @@ func hash(s string) string {
 
 func executeCommand(c string) error {
 	commandArray := strings.Split(c, " ")
-	log.Println(commandArray)
 	mainCommand := commandArray[0]
 	args := commandArray[1:]
 	cmd := exec.Command(mainCommand, args...)
 	cmd.Dir = os.Getenv("TERRAFORM_DIR")
 	stdoutStderr, err := cmd.CombinedOutput()
-	fmt.Printf("%s\n", stdoutStderr)
+	cleanStdoutStderr := stripansi.Strip(string(stdoutStderr))
+	fmt.Println(cleanStdoutStderr)
 	if err != nil {
 		return err
 	}

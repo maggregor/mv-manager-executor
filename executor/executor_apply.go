@@ -19,8 +19,10 @@ func (e *ApplyExecutor) executeShell() error {
 	tmpE := WorkspaceExecutor{Attributes: e.Attributes}
 	tmpE.setCommand()
 	log.Printf("Executing: %q\n", tmpE.Command)
-	executeCommand(tmpE.Command)
-	// Create the var file
+	if err := executeCommand(tmpE.Command); err != nil {
+		return err
+	}
+	// Create the var file for the terraform module
 	err := e.createVarFile()
 	if err != nil {
 		return err

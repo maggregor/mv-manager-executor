@@ -51,5 +51,7 @@ func PubSub(w http.ResponseWriter, r *http.Request) {
 	}
 
 	t := Terraform{m.Message, nil}
-	err = t.Execute()
+	if err = t.Execute(); err != nil {
+		http.Error(w, "Internal error with terraform execution", http.StatusInternalServerError)
+	}
 }

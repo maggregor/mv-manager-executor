@@ -12,9 +12,10 @@ type WorkspaceExecutor struct {
 // ExecuteShell uses the command attribute and execute it in the shell
 func (e *WorkspaceExecutor) executeShell() error {
 	e.setCommand()
-	// TODO: Uncomment next line when terraform module is added
-	executeCommand(e.Command)
 	log.Printf("Executing: %q\n", e.Command)
+	if err := executeCommand(e.Command); err != nil {
+		return err
+	}
 	return nil
 }
 
