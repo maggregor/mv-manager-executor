@@ -1,13 +1,28 @@
 steps:
-# Build the container image
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'gcr.io/achilio-dev/mvm-executor', '.']
-  env: ['TERRAFORM_VERSION=0.15.4']
-# Push the container image to Container Registry
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'gcr.io/achilio-dev/mvm-executor']
-# Deploy container image to Cloud Run  
-- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-  entrypoint: gcloud
-  args: ['beta', 'run', 'deploy', 'mvm-executor', '--image', 'gcr.io/achilio-dev/mvm-executor', '--update-secrets=AWS_ACCESS_KEY_ID=projects/293325499254/secrets/achilio-dev-aws-access-key:1,AWS_SECRET_ACCESS_KEY=projects/293325499254/secrets/achilio-dev-aws-secret-key:1', '--region', 'europe-west1', '--platform', 'managed']
-images: ['gcr.io/achilio-dev/mvm-executor']
+  # Build the container image
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["build", "-t", "gcr.io/achilio-dev/mvm-executor", "."]
+    env: ["TERRAFORM_VERSION=0.15.4"]
+  # Push the container image to Container Registry
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["push", "gcr.io/achilio-dev/mvm-executor"]
+  # Deploy container image to Cloud Run
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    entrypoint: gcloud
+    args:
+      [
+        "beta",
+        "run",
+        "deploy",
+        "mvm-executor",
+        "--image",
+        "gcr.io/achilio-dev/mvm-executor",
+        "--update-secrets=AWS_ACCESS_KEY_ID=projects/293325499254/secrets/achilio-dev-aws-access-key:1,AWS_SECRET_ACCESS_KEY=projects/293325499254/secrets/achilio-dev-aws-secret-key:1",
+        "--region",
+        "europe-west1",
+        "--platform",
+        "managed",
+      ]
+images: ["gcr.io/achilio-dev/mvm-executor"]
+options:
+  logging: CLOUD_LOGGING_ONLY
