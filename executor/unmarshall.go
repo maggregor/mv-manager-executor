@@ -21,10 +21,10 @@ func (message *Message) UnmarshalJSON(data []byte) (err error) {
 	}
 	// Removing empty queries
 	queries := strings.Split(string(messageData.Data), ";")
-	filtered := FilterEmpty(queries, func(query string) bool {
-		return query != ""
-	})
-	message.Attributes.Queries = filtered
+	filtered := filterString(queries, stringIsEmpty)
+	// Unescaping double quotes in each query
+	raw := unescapeQuotes(filtered)
+	message.Attributes.Queries = raw
 	message.Attributes.AccessToken = messageData.Attributes.AccessToken
 	message.Attributes.CmdType = messageData.Attributes.CmdType
 	message.Attributes.ProjectID = messageData.Attributes.ProjectID
@@ -33,8 +33,23 @@ func (message *Message) UnmarshalJSON(data []byte) (err error) {
 	return
 }
 
-// FilterEmpty Returns false if the string in a string array is empty
-func FilterEmpty(vs []string, f func(string) bool) []string {
+// unescapeQuotes Removes \ from a string if precedes a double quote
+func unescapeQuotes(vs []string) []string {
+	raw := make([]string, 0)
+	for _, v := range vs {
+		r := strings.ReplaceAll(v, "\\", "")
+		raw = append(raw, r)
+	}
+	return raw
+}
+
+func stringIsEmpty(s string) bool {
+	return s != ""
+}
+
+// filterString Returns a array of string containing only those that return true when passed
+// to the function f
+func filterString(vs []string, f func(string) bool) []string {
 	filtered := make([]string, 0)
 	for _, v := range vs {
 		if f(v) {

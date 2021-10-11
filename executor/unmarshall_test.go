@@ -280,3 +280,33 @@ func TestAttributeUnmarshallMessageDataVeryLong(t *testing.T) {
 		log.Printf("%v\n", err)
 	}
 }
+
+func TestAttributeUnmarshallEscapedQuotesInData(t *testing.T) {
+	// data is: SELECT (FORMAT_DATETIME(\"%B\", DATETIME(pickup_datetime))) IN (\"December\", \"January\", \"June\", \"March\") AS a_386307744
+	i1 := `{
+		"message": {
+			"attributes": {
+				"accessToken": "value",
+				"cmdType": "apply",
+				"projectId": "myproject",
+				"regionId": "myregion",
+				"datasetName": "mydataset"
+			},
+			"data": "U0VMRUNUIChGT1JNQVRfREFURVRJTUUoXCIlQlwiLCBEQVRFVElNRShwaWNrdXBfZGF0ZXRpbWUpKSkgSU4gKFwiRGVjZW1iZXJcIiwgXCJKYW51YXJ5XCIsIFwiSnVuZVwiLCBcIk1hcmNoXCIpIEFTIGFfMzg2MzA3NzQ0",
+			"messageId": "2070443601311540",
+			"message_id": "2070443601311540",
+			"publishTime": "2021-02-26T19:13:55.749Z",
+			"publish_time": "2021-02-26T19:13:55.749Z"
+		},
+	    "subscription": "projects/myproject/subscriptions/mysubscription"
+	}`
+	i2 := []byte(i1)
+	var r1 PubSubMessage
+	if err := json.Unmarshal(i2, &r1); err != nil {
+		log.Fatalf("json.Unmarshal: should not be in error %v\n", r1)
+	}
+	log.Printf("Query is %v", r1.Message.Attributes.Queries[0])
+	if r1.Message.Attributes.Queries[0] != `SELECT (FORMAT_DATETIME("%B", DATETIME(pickup_datetime))) IN ("December", "January", "June", "March") AS a_386307744` {
+		log.Fatalf("Query is %v, expected %v", r1.Message.Attributes.Queries[0], `SELECT (FORMAT_DATETIME("%B", DATETIME(pickup_datetime))) IN ("December", "January", "June", "March") AS a_386307744`)
+	}
+}
