@@ -1,4 +1,16 @@
 steps:
+  # Run tests
+  - name: "golang"
+    id: "go-test"
+    entrypoint: go
+    args:
+      [
+        "test",
+        "-race",
+        "-covermode=atomic",
+        "-coverprofile=coverage.out",
+        "./...",
+      ]
   # Build the container image
   - name: "gcr.io/cloud-builders/docker"
     args: ["build", "-t", "gcr.io/achilio-dev/mvm-executor", "."]
@@ -23,6 +35,17 @@ steps:
         "--platform",
         "managed",
       ]
+  - name: "gcr.io/cloud-builders/curl"
+    id: "codecov-report"
+    waitFor: ["go-test"]
+    entrypoint: bash
+    args: ["-c", "bash <(curl -s https://codecov.io/bash)"]
+    env:
+      - "VCS_COMMIT_ID=$COMMIT_SHA"
+      - "VCS_BRANCH_NAME=$BRANCH_NAME"
+      - "VCS_PULL_REQUEST=$_PR_NUMBER"
+      - "CI_BUILD_ID=$BUILD_ID"
+      - "CODECOV_TOKEN=9c0472f6-4cf8-477e-b446-bec89b17af36" # _CODECOV_TOKEN is user user substituion variable specified in my cloud build trigger
 images: ["gcr.io/achilio-dev/mvm-executor"]
 options:
   logging: CLOUD_LOGGING_ONLY

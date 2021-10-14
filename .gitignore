@@ -1,3 +1,4 @@
 .terraform/
 terraform.tfsate.d/
 .vscode/
+coverage.out
