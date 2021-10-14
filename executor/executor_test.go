@@ -56,7 +56,7 @@ func TestInitWorkspace(t *testing.T) {
 }
 
 func TestInitUnknown(t *testing.T) {
-	terra := Terraform{Message: Message{Attributes: Attributes{CmdType: "coucou"}}}
+	terra := Terraform{Message: Message{Attributes: Attributes{CmdType: "foo"}}}
 	err := terra.init()
 	if err == nil {
 		log.Fatalf("Init should be in error")

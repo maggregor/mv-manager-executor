@@ -17,7 +17,7 @@ func (message *Message) UnmarshalJSON(data []byte) (err error) {
 	}{}
 	err = json.Unmarshal(data, &messageData)
 	if err != nil {
-		return
+		return err
 	}
 	// Removing empty queries
 	queries := strings.Split(string(messageData.Data), ";")
@@ -60,7 +60,7 @@ func filterString(vs []string, f func(string) bool) []string {
 }
 
 // UnmarshalJSON Custom unmarshall method for Attributes to check that the payload is valid for terraform executor
-func (attribute *Attributes) UnmarshalJSON(data []byte) (err error) {
+func (attribute *Attributes) UnmarshalJSON(data []byte) error {
 	required := struct {
 		ProjectID   string `json:"projectId"`
 		RegionID    string `json:"regionId"`
@@ -74,18 +74,21 @@ func (attribute *Attributes) UnmarshalJSON(data []byte) (err error) {
 		DatasetName string `json:"datasetName"`
 		CmdType     string `json:"cmdType"`
 	}{}
-	err = json.Unmarshal(data, &required)
+	err := json.Unmarshal(data, &required)
 	if err != nil {
-		return
+		return err
 	} else if required.CmdType == "" || (required.CmdType != WORKSPACE && required.CmdType != APPLY) {
 		err = fmt.Errorf("cmdType is required and must be equal to either 'workspace' or 'apply'")
-		return
+		return err
 	} else if required.ProjectID == "" {
 		err = fmt.Errorf("projectId is required")
+		return err
 	} else if required.RegionID == "" && required.CmdType == APPLY {
 		err = fmt.Errorf("regionId is required when command is apply")
+		return err
 	} else if required.DatasetName == "" && required.CmdType == APPLY {
 		err = fmt.Errorf("datasetName is required when command is apply")
+		return err
 	} else {
 		err = json.Unmarshal(data, &all)
 		attribute.AccessToken = all.AccessToken
@@ -94,5 +97,5 @@ func (attribute *Attributes) UnmarshalJSON(data []byte) (err error) {
 		attribute.RegionID = all.RegionID
 		attribute.DatasetName = all.DatasetName
 	}
-	return
+	return nil
 }
