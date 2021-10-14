@@ -1,9 +1,11 @@
 # Achilio mv-manager-executor
 
+[![codecov](https://codecov.io/gh/achilio/mv-manager-executor/branch/master/graph/badge.svg?token=OLM9U79QD4)](https://codecov.io/gh/achilio/mv-manager-executor)
+
 ## Roadmap
 
-- [x] Handling notification message to build the command to execute
-- [x] Add terraform module to actually execute
+-   [x] Handling notification message to build the command to execute
+-   [x] Add terraform module to actually execute
 
 ## Run locally
 
@@ -34,11 +36,11 @@ Documentation to send messages via Pub/Sub in Java (and many other languages): h
 
 For the mv-manager-executor to work, the message must have the following attributes:
 
-- "cmdType": enum("apply", "workspace") // Apply is for creating a new set of views. Workspace is for creating a new workspace (new project activated)
-- "projectId": string
-- "accessToken: string
-- "regionId": string // Not required if cmdType is workspace
-- "datasetName": string // Not required if cmdType is workspace
+-   "cmdType": enum("apply", "workspace") // Apply is for creating a new set of views. Workspace is for creating a new workspace (new project activated)
+-   "projectId": string
+-   "accessToken: string
+-   "regionId": string // Not required if cmdType is workspace
+-   "datasetName": string // Not required if cmdType is workspace
 
 The message data is a list of ; separated SELECT queries representing the views to create. The message is sent as a base64 encoded string when using PubSub with the Google SDK or gcloud. But if you are sending the message locally with a direct HTTP request, you need to encode the string in base64 beforehand
 

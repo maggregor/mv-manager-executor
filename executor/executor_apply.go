@@ -13,27 +13,6 @@ type ApplyExecutor struct {
 	VarFile    string // Absolute path to the var file to use
 }
 
-// ExecuteShell uses the command attribute and execute it in the shell
-func (e *ApplyExecutor) executeShell() error {
-	// First, select the correct workspace
-	tmpE := WorkspaceExecutor{Attributes: e.Attributes}
-	tmpE.setCommand()
-	log.Printf("Executing: %q\n", tmpE.Command)
-	if err := executeCommand(tmpE.Command); err != nil {
-		return err
-	}
-	// Create the var file for the terraform module
-	err := e.createVarFile()
-	if err != nil {
-		return err
-	}
-	// Execute the apply command
-	e.setCommand()
-	log.Printf("Executing: %q\n", e.Command)
-	executeCommand(e.Command)
-	return nil
-}
-
 func (e *ApplyExecutor) setQueries() {
 	for _, query := range e.Attributes.Queries {
 		tmpQ := QueryParameter{MvmName: "mvm_" + hash(query), QueryContent: query}
@@ -49,7 +28,10 @@ func (e *ApplyExecutor) createVarFile() error {
 		return err
 	}
 	log.Println("Creating tmp var file: " + varFile.Name())
-	varFile.WriteString(e.toString())
+	_, err = varFile.WriteString(e.toString())
+	if err != nil {
+		return err
+	}
 	e.VarFile = varFile.Name()
 	return nil
 }

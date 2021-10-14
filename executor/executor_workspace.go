@@ -1,22 +1,8 @@
 package executor
 
-import (
-	"log"
-)
-
 type WorkspaceExecutor struct {
 	Attributes Attributes
 	Command    string
-}
-
-// ExecuteShell uses the command attribute and execute it in the shell
-func (e *WorkspaceExecutor) executeShell() error {
-	e.setCommand()
-	log.Printf("Executing: %q\n", e.Command)
-	if err := executeCommand(e.Command); err != nil {
-		return err
-	}
-	return nil
 }
 
 func (e *WorkspaceExecutor) setQueries() {
