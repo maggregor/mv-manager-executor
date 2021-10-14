@@ -10,6 +10,20 @@ import (
 	"github.com/acarl005/stripansi"
 )
 
+// Execute builds and executes the Terraform command
+func (t *Terraform) Execute() error {
+	err := t.init()
+	if err != nil {
+		return err
+	}
+	t.Executor.setQueries()
+	t.Executor.setCommand()
+	if err := t.Executor.executeShell(); err != nil {
+		return err
+	}
+	return nil
+}
+
 // executeShell uses the command attribute and execute it in the shell
 func (e *WorkspaceExecutor) executeShell() error {
 	e.setCommand()

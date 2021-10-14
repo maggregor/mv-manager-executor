@@ -22,19 +22,6 @@ const (
 	APPLY     = "apply"
 )
 
-func (t *Terraform) Execute() error {
-	err := t.init()
-	if err != nil {
-		return err
-	}
-	t.Executor.setQueries()
-	t.Executor.setCommand()
-	if err := t.Executor.executeShell(); err != nil {
-		return err
-	}
-	return nil
-}
-
 func (t *Terraform) init() error {
 	switch t.Message.Attributes.CmdType {
 	case WORKSPACE:
