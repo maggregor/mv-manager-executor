@@ -18,7 +18,6 @@ func (e *ApplyExecutor) setQueries() {
 		tmpQ := QueryParameter{MvmName: "mvm_" + hash(query), QueryContent: query}
 		e.Queries = append(e.Queries, tmpQ)
 	}
-	return
 }
 
 func (e *ApplyExecutor) createVarFile() error {

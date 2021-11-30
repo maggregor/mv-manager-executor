@@ -7,7 +7,6 @@ type WorkspaceExecutor struct {
 
 func (e *WorkspaceExecutor) setQueries() {
 	// WorkspaceExecutor does not use this method
-	return
 }
 
 func (e *WorkspaceExecutor) setCommand() {

@@ -91,6 +91,9 @@ func (attribute *Attributes) UnmarshalJSON(data []byte) error {
 		return err
 	} else {
 		err = json.Unmarshal(data, &all)
+		if err != nil {
+			return err
+		}
 		attribute.AccessToken = all.AccessToken
 		attribute.CmdType = all.CmdType
 		attribute.ProjectID = all.ProjectID
