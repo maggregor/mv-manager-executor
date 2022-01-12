@@ -98,7 +98,7 @@ func TestToFetchTestTables(t *testing.T) {
 		log.Fatalf("Error during iteration: %v", err)
 	}
 	ft2 := toFetchedTable(table, ctx)
-	fte2 := FetchedTable{"achilio-test:executor_integration_test.b_notachiliomv", "b_notachiliomv", "achilio-test", "executor_integration_test", "MATERIALIZED_VIEW", "SELECT FORMAT_DATETIME(\"%B\", DATETIME(pickup_datetime)) AS a_1336711789, COUNT(*) AS a_410576920 FROM `achilio-test`.`executor_integration_test`.`tlc_yellow_trips_2015_small` GROUP BY a_1336711789"}
+	fte2 := FetchedTable{"achilio-test:executor_integration_test.b_notachiliomv", "b_notachiliomv", "achilio-test", "executor_integration_test", "MATERIALIZED_VIEW", "SELECT COUNT(*) AS a_410576920 FROM `achilio-dev`.`nyc_trips`.`tlc_yellow_trips_2015_small`"}
 	if !FetchedTableEqual(*ft2, fte2) {
 		log.Fatalf("FetchedTable is:\n%v\nexpected:\n%v", *ft2, fte2)
 	}
@@ -112,7 +112,7 @@ func TestToFetchTestTables(t *testing.T) {
 		log.Fatalf("Error during iteration: %v", err)
 	}
 	ft3 := toFetchedTable(table, ctx)
-	fte3 := FetchedTable{"achilio-test:executor_integration_test.mvm_12345", "mvm_12345", "achilio-test", "executor_integration_test", "MATERIALIZED_VIEW", "SELECT FORMAT_DATETIME(\"%B\", DATETIME(pickup_datetime)) AS a_1336711789, COUNT(*) AS a_410576920 FROM `achilio-test`.`executor_integration_test`.`tlc_yellow_trips_2015_small` GROUP BY a_1336711789"}
+	fte3 := FetchedTable{"achilio-test:executor_integration_test.mvm_12345", "mvm_12345", "achilio-test", "executor_integration_test", "MATERIALIZED_VIEW", "SELECT COUNT(*) AS a_410576920 FROM `achilio-dev`.`nyc_trips`.`tlc_yellow_trips_2015_small`"}
 	if !FetchedTableEqual(*ft3, fte3) {
 		log.Fatalf("FetchedTable is:\n%v\nexpected:\n%v", *ft3, fte3)
 	}
@@ -126,14 +126,14 @@ func TestToFetchTestTables(t *testing.T) {
 		log.Fatalf("Error during iteration: %v", err)
 	}
 	ft4 := toFetchedTable(table, ctx)
-	fte4 := FetchedTable{"achilio-test:executor_integration_test.mvm_fakeachiliomv", "mvm_fakeachiliomv", "achilio-test", "executor_integration_test", "MATERIALIZED_VIEW", "SELECT FORMAT_DATETIME(\"%B\", DATETIME(pickup_datetime)) AS a_1336711789, COUNT(*) AS a_410576920 FROM `achilio-test`.`executor_integration_test`.`tlc_yellow_trips_2015_small` GROUP BY a_1336711789"}
+	fte4 := FetchedTable{"achilio-test:executor_integration_test.mvm_fakeachiliomv", "mvm_fakeachiliomv", "achilio-test", "executor_integration_test", "MATERIALIZED_VIEW", "SELECT COUNT(*) AS a_410576920 FROM `achilio-dev`.`nyc_trips`.`tlc_yellow_trips_2015_small`"}
 	if !FetchedTableEqual(*ft4, fte4) {
 		log.Fatalf("FetchedTable is:\n%v\nexpected:\n%v", *ft4, fte4)
 	}
 }
 
 func TestIsAchilioMv1(t *testing.T) {
-	ft := &FetchedTable{"achilio-test:executor_integration_test.mvm_1234", "mvm_1234", "achilio-test", "executor_integration_test", "MATERIALIZED_VIEW", "SELECT FORMAT_DATETIME(\"%B\", DATETIME(pickup_datetime)) AS a_1336711789, COUNT(*) AS a_410576920 FROM `achilio-test`.`executor_integration_test`.`tlc_yellow_trips_2015_small` GROUP BY a_1336711789"}
+	ft := &FetchedTable{"achilio-test:executor_integration_test.mvm_1234", "mvm_1234", "achilio-test", "executor_integration_test", "MATERIALIZED_VIEW", "SELECT COUNT(*) AS a_410576920 FROM `achilio-dev`.`nyc_trips`.`tlc_yellow_trips_2015_small`"}
 	if !ft.isAchilioMv() {
 		log.Fatalln("isAchilioMv1 should return true")
 	}
@@ -147,14 +147,14 @@ func TestIsAchilioMv2(t *testing.T) {
 }
 
 func TestIsAchilioMv3(t *testing.T) {
-	ft := &FetchedTable{"achilio-test:executor_integration_test.b_notachiliomv", "b_notachiliomv", "achilio-test", "executor_integration_test", "MATERIALIZED_VIEW", "SELECT FORMAT_DATETIME(\"%B\", DATETIME(pickup_datetime)) AS a_1336711789, COUNT(*) AS a_410576920 FROM `achilio-test`.`executor_integration_test`.`tlc_yellow_trips_2015_small` GROUP BY a_1336711789"}
+	ft := &FetchedTable{"achilio-test:executor_integration_test.b_notachiliomv", "b_notachiliomv", "achilio-test", "executor_integration_test", "MATERIALIZED_VIEW", "SELECT COUNT(*) AS a_410576920 FROM `achilio-dev`.`nyc_trips`.`tlc_yellow_trips_2015_small`"}
 	if ft.isAchilioMv() {
 		log.Fatalln("isAchilioMv4 should return false")
 	}
 }
 
 func TestIsAchilioMv4(t *testing.T) {
-	ft := &FetchedTable{"achilio-test:executor_integration_test.mvm_fakeachiliomv", "mvm_fakeachiliomv", "achilio-test", "executor_integration_test", "MATERIALIZED_VIEW", "SELECT FORMAT_DATETIME(\"%B\", DATETIME(pickup_datetime)) AS a_1336711789, COUNT(*) AS a_410576920 FROM `achilio-test`.`executor_integration_test`.`tlc_yellow_trips_2015_small` GROUP BY a_1336711789"}
+	ft := &FetchedTable{"achilio-test:executor_integration_test.mvm_fakeachiliomv", "mvm_fakeachiliomv", "achilio-test", "executor_integration_test", "MATERIALIZED_VIEW", "SELECT COUNT(*) AS a_410576920 FROM `achilio-dev`.`nyc_trips`.`tlc_yellow_trips_2015_small`"}
 	if ft.isAchilioMv() {
 		log.Fatalln("isAchilioMv4 should return false")
 	}
@@ -168,22 +168,22 @@ func TestIsPositiveInt(t *testing.T) {
 	i5 := "-12345"
 	i6 := "0000"
 	if !IsPositiveInt(i1) {
-		log.Fatalln("IsInt i1 should be true")
+		log.Fatalln("IsPositiveInt of i1 should be true")
 	}
 	if IsPositiveInt(i2) {
-		log.Fatalln("IsInt i2 should be false")
+		log.Fatalln("IsPositiveInt of i2 should be false")
 	}
 	if IsPositiveInt(i3) {
-		log.Fatalln("IsInt i3 should be false")
+		log.Fatalln("IsPositiveInt of i3 should be false")
 	}
 	if IsPositiveInt(i4) {
-		log.Fatalln("IsInt i4 should be false")
+		log.Fatalln("IsPositiveInt of i4 should be false")
 	}
 	if IsPositiveInt(i5) {
-		log.Fatalln("IsInt i5 should be false")
+		log.Fatalln("IsPositiveInt of i5 should be false")
 	}
 	if IsPositiveInt(i6) {
-		log.Fatalln("IsInt i6 should be false")
+		log.Fatalln("IsPositiveInt of i6 should be false")
 	}
 }
 
@@ -198,9 +198,9 @@ func TestToMvDefinition1(t *testing.T) {
 }
 
 func TestToMvDefinition2(t *testing.T) {
-	ft := &FetchedTable{"achilio-test:executor_integration_test.mvm_12345", "mvm_12345", "achilio-test", "executor_integration_test", "MATERIALIZED_VIEW", "SELECT FORMAT_DATETIME(\"%B\", DATETIME(pickup_datetime)) AS a_1336711789, COUNT(*) AS a_410576920 FROM `achilio-test`.`executor_integration_test`.`tlc_yellow_trips_2015_small` GROUP BY a_1336711789"}
+	ft := &FetchedTable{"achilio-test:executor_integration_test.mvm_12345", "mvm_12345", "achilio-test", "executor_integration_test", "MATERIALIZED_VIEW", "SELECT COUNT(*) AS a_410576920 FROM `achilio-dev`.`nyc_trips`.`tlc_yellow_trips_2015_small`"}
 	mv := ft.toMvDefinition()
-	mve := NewMvDefinition("mvm_12345", 12345, "achilio-test", "executor_integration_test", "SELECT FORMAT_DATETIME(\"%B\", DATETIME(pickup_datetime)) AS a_1336711789, COUNT(*) AS a_410576920 FROM `achilio-test`.`executor_integration_test`.`tlc_yellow_trips_2015_small` GROUP BY a_1336711789")
+	mve := NewMvDefinition("mvm_12345", 12345, "achilio-test", "executor_integration_test", "SELECT COUNT(*) AS a_410576920 FROM `achilio-dev`.`nyc_trips`.`tlc_yellow_trips_2015_small`")
 	if !MvDefinitionEqual(mv, mve) {
 		log.Fatalf("Transformed MvDefinition is:\n%v\nexpected:\n%v", mv, mve)
 	}
@@ -208,7 +208,7 @@ func TestToMvDefinition2(t *testing.T) {
 }
 
 func TestToMvDefinition3(t *testing.T) {
-	ft := &FetchedTable{"achilio-test:executor_integration_test.mvm_fakeachiliomv", "mvm_fakeachiliomv", "achilio-test", "executor_integration_test", "MATERIALIZED_VIEW", "SELECT FORMAT_DATETIME(\"%B\", DATETIME(pickup_datetime)) AS a_1336711789, COUNT(*) AS a_410576920 FROM `achilio-test`.`executor_integration_test`.`tlc_yellow_trips_2015_small` GROUP BY a_1336711789"}
+	ft := &FetchedTable{"achilio-test:executor_integration_test.mvm_fakeachiliomv", "mvm_fakeachiliomv", "achilio-test", "executor_integration_test", "MATERIALIZED_VIEW", "SELECT COUNT(*) AS a_410576920 FROM `achilio-dev`.`nyc_trips`.`tlc_yellow_trips_2015_small`"}
 	mv := ft.toMvDefinition()
 	mve := MvDefinition{}
 	if !MvDefinitionEqual(mv, mve) {
