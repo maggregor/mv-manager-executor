@@ -28,7 +28,6 @@ func (message *Message) UnmarshalJSON(data []byte) (err error) {
 	message.Attributes.AccessToken = messageData.Attributes.AccessToken
 	message.Attributes.CmdType = messageData.Attributes.CmdType
 	message.Attributes.ProjectID = messageData.Attributes.ProjectID
-	message.Attributes.RegionID = messageData.Attributes.RegionID
 	message.Attributes.DatasetName = messageData.Attributes.DatasetName
 	return
 }
@@ -63,14 +62,12 @@ func filterString(vs []string, f func(string) bool) []string {
 func (attribute *Attributes) UnmarshalJSON(data []byte) error {
 	required := struct {
 		ProjectID   string `json:"projectId"`
-		RegionID    string `json:"regionId"`
 		DatasetName string `json:"datasetName"`
 		CmdType     string `json:"cmdType"`
 	}{}
 	all := struct {
 		AccessToken string `json:"accessToken,omitempty"`
 		ProjectID   string `json:"projectId"`
-		RegionID    string `json:"regionId"`
 		DatasetName string `json:"datasetName"`
 		CmdType     string `json:"cmdType"`
 	}{}
@@ -83,9 +80,6 @@ func (attribute *Attributes) UnmarshalJSON(data []byte) error {
 	} else if required.ProjectID == "" {
 		err = fmt.Errorf("projectId is required")
 		return err
-	} else if required.RegionID == "" && required.CmdType == APPLY {
-		err = fmt.Errorf("regionId is required when command is apply")
-		return err
 	} else if required.DatasetName == "" && required.CmdType == APPLY {
 		err = fmt.Errorf("datasetName is required when command is apply")
 		return err
@@ -94,7 +88,6 @@ func (attribute *Attributes) UnmarshalJSON(data []byte) error {
 		attribute.AccessToken = all.AccessToken
 		attribute.CmdType = all.CmdType
 		attribute.ProjectID = all.ProjectID
-		attribute.RegionID = all.RegionID
 		attribute.DatasetName = all.DatasetName
 	}
 	return nil
