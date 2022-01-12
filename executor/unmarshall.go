@@ -10,7 +10,7 @@ import (
 // Message Data should be a ; delimited list of SQL queries, each representing a
 // Materialized view to be created by TerraformExecutor
 func (message *Message) UnmarshalJSON(data []byte) (err error) {
-	// m := string(data)
+	var queries []string
 	messageData := struct {
 		Data       []byte     `json:"data,omitempty"`
 		Attributes Attributes `json:"attributes,omitempty"`
@@ -19,12 +19,13 @@ func (message *Message) UnmarshalJSON(data []byte) (err error) {
 	if err != nil {
 		return err
 	}
+	err = json.Unmarshal(messageData.Data, &queries)
 	// Removing empty queries
-	queries := strings.Split(string(messageData.Data), ";")
-	filtered := filterString(queries, stringIsEmpty)
+	queriesFiltered := filterString(queries, stringIsEmpty)
 	// Unescaping double quotes in each query
-	raw := unescapeQuotes(filtered)
-	message.Attributes.Queries = raw
+	queriesClean := unescapeQuotes(queriesFiltered)
+
+	message.Attributes.Queries = queriesClean
 	message.Attributes.AccessToken = messageData.Attributes.AccessToken
 	message.Attributes.CmdType = messageData.Attributes.CmdType
 	message.Attributes.ProjectID = messageData.Attributes.ProjectID
