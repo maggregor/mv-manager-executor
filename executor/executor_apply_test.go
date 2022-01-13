@@ -9,7 +9,7 @@ import (
 
 func TestSetQueries1(t *testing.T) {
 	i1 := []string{"SELECT 1", "SELECT 2"}
-	a1 := Attributes{AccessToken: "myAccessToken", ProjectID: "myprojectid", RegionID: "myregionid", DatasetName: "mydatasetname", Queries: i1}
+	a1 := Attributes{AccessToken: "myAccessToken", ProjectID: "myprojectid", DatasetName: "mydatasetname", Queries: i1}
 	executor := &ApplyExecutor{a1, "", nil, ""}
 	executor.setQueries()
 	if len(executor.Queries) != 2 {
@@ -24,7 +24,7 @@ func TestSetQueries1(t *testing.T) {
 // Test setCommand()
 
 func TestSetCommandApply1(t *testing.T) {
-	a1 := Attributes{AccessToken: "myAccessToken", ProjectID: "myprojectid", RegionID: "myregionid", DatasetName: "mydatasetname", Queries: nil}
+	a1 := Attributes{AccessToken: "myAccessToken", ProjectID: "myprojectid", DatasetName: "mydatasetname", Queries: nil}
 	executor := &ApplyExecutor{a1, "", nil, "/tmp/varfile1"}
 	expected := "terraform apply -auto-approve -var-file /tmp/varfile1"
 	executor.setCommand()
@@ -36,7 +36,7 @@ func TestSetCommandApply1(t *testing.T) {
 // Test createVarFile()
 
 func TestCreateVarFile1(t *testing.T) {
-	a1 := Attributes{AccessToken: "myAccessToken", ProjectID: "myprojectid", RegionID: "myregionid", DatasetName: "mydatasetname", Queries: nil}
+	a1 := Attributes{AccessToken: "myAccessToken", ProjectID: "myprojectid", DatasetName: "mydatasetname", Queries: nil}
 	executor := &ApplyExecutor{a1, "", nil, ""}
 	executor.createVarFile()
 	if executor.VarFile == "" {
@@ -48,14 +48,13 @@ func TestCreateVarFile1(t *testing.T) {
 
 func TestToString1(t *testing.T) {
 	i1 := []string{"SELECT 1", "SELECT 2"}
-	a1 := Attributes{AccessToken: "myAccessToken", ProjectID: "myprojectid", RegionID: "myregionid", DatasetName: "mydatasetname", Queries: i1}
+	a1 := Attributes{AccessToken: "myAccessToken", ProjectID: "myprojectid", DatasetName: "mydatasetname", Queries: i1}
 	q1 := QueryParameter{MvmName: "mvm_1234", QueryContent: i1[0]}
 	q2 := QueryParameter{MvmName: "mvm_5678", QueryContent: i1[1]}
 	q := []QueryParameter{q1, q2}
 	executor := &ApplyExecutor{a1, "", q, ""}
 	r1 := executor.toString()
 	expected := `project_id = "myprojectid"
-region_id = "myregionid"
 dataset_name = "mydatasetname"
 access_token = "myAccessToken"
 queries = {

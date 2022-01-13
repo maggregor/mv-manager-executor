@@ -12,7 +12,6 @@ import (
 type Attributes struct {
 	AccessToken string   `json:"accessToken,omitempty"`
 	ProjectID   string   `json:"projectId"`
-	RegionID    string   `json:"regionId"`
 	DatasetName string   `json:"datasetName"`
 	CmdType     string   `json:"cmdType"`
 	Queries     []string `json:"queries"`

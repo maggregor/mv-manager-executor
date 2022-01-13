@@ -8,7 +8,7 @@ import (
 // Test setCommand()
 
 func TestSetCommandWorkspace1(t *testing.T) {
-	a1 := Attributes{AccessToken: "myAccessToken", ProjectID: "myprojectid", RegionID: "myregionid", DatasetName: "mydatasetname", CmdType: "workspace", Queries: nil}
+	a1 := Attributes{AccessToken: "myAccessToken", ProjectID: "myprojectid", DatasetName: "mydatasetname", CmdType: "workspace", Queries: nil}
 	executor := &WorkspaceExecutor{a1, ""}
 	expected := "terraform workspace new myprojectid"
 	executor.setCommand()
@@ -18,7 +18,7 @@ func TestSetCommandWorkspace1(t *testing.T) {
 }
 
 func TestSetCommandWorkspace2(t *testing.T) {
-	a1 := Attributes{AccessToken: "myAccessToken", ProjectID: "myprojectid", RegionID: "myregionid", DatasetName: "mydatasetname", CmdType: "apply", Queries: nil}
+	a1 := Attributes{AccessToken: "myAccessToken", ProjectID: "myprojectid", DatasetName: "mydatasetname", CmdType: "apply", Queries: nil}
 	executor := &WorkspaceExecutor{a1, ""}
 	expected := "terraform workspace select myprojectid"
 	executor.setCommand()
