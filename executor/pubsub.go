@@ -38,6 +38,7 @@ type PubSubMessage struct {
 func PubSub(w http.ResponseWriter, r *http.Request) {
 	var m PubSubMessage
 	body, err := ioutil.ReadAll(r.Body)
+	log.Printf("%v", body)
 	if err != nil {
 		log.Printf("ioutil.ReadAll: %v", err)
 		http.Error(w, "Bad Request", http.StatusBadRequest)
@@ -49,7 +50,6 @@ func PubSub(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	log.Printf("%v", m.Message)
 	t := Terraform{m.Message, nil}
 	if err = t.Execute(); err != nil {
 		http.Error(w, "Internal error with terraform execution", http.StatusInternalServerError)
