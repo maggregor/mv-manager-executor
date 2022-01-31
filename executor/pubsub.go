@@ -38,7 +38,7 @@ type PubSubMessage struct {
 func PubSub(w http.ResponseWriter, r *http.Request) {
 	var m PubSubMessage
 	body, err := ioutil.ReadAll(r.Body)
-	log.Printf("%v", body)
+	log.Printf("%s", string(body))
 	if err != nil {
 		log.Printf("ioutil.ReadAll: %v", err)
 		http.Error(w, "Bad Request", http.StatusBadRequest)
