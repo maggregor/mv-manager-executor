@@ -81,7 +81,7 @@ func TestAttributeUnmarshallError3(t *testing.T) {
 	}
 }
 
-func TestAttributeUnmarshall2(t *testing.T) {
+func TestAttributeUnmarshallWorkspace(t *testing.T) {
 	i1 := `{
 		"message": {
 			"attributes": {
@@ -100,7 +100,7 @@ func TestAttributeUnmarshall2(t *testing.T) {
 	i2 := []byte(i1)
 	var r1 PubSubMessage
 	if err := json.Unmarshal(i2, &r1); err != nil {
-		log.Fatalf("json.Unmarshal: should not be in error %v\n", err)
+		log.Fatalf("json.Unmarshal: should not be in error: %v\n", err)
 		return
 	} else if r1.Message.Attributes.CmdType != "workspace" {
 		log.Fatalf("Attribute cmdType is %v, expected 'workspace'", r1.Message.Attributes.CmdType)
@@ -108,6 +108,35 @@ func TestAttributeUnmarshall2(t *testing.T) {
 		log.Fatalf("Attribute projectId is %v, expected 'myproject'", r1.Message.Attributes.CmdType)
 	} else if r1.Message.Attributes.AccessToken != "value" {
 		log.Fatalf("Attribute accessToken is %v, expected 'value'", r1.Message.Attributes.CmdType)
+	} else {
+		log.Printf("%v\n", r1.Message.Attributes)
+	}
+}
+
+func TestAttributeUnmarshallWorkspaceNoToken(t *testing.T) {
+	i1 := `{
+		"message": {
+			"attributes": {
+				"cmdType": "workspace",
+				"projectId": "myproject"
+			},
+			"data": "W10=",
+			"messageId": "2070443601311540",
+			"message_id": "2070443601311540",
+			"publishTime": "2021-02-26T19:13:55.749Z",
+			"publish_time": "2021-02-26T19:13:55.749Z"
+		},
+	    "subscription": "projects/myproject/subscriptions/mysubscription"
+	}`
+	i2 := []byte(i1)
+	var r1 PubSubMessage
+	if err := json.Unmarshal(i2, &r1); err != nil {
+		log.Fatalf("json.Unmarshal: should not be in error: %v\n", err)
+		return
+	} else if r1.Message.Attributes.CmdType != "workspace" {
+		log.Fatalf("Attribute cmdType is %v, expected 'workspace'", r1.Message.Attributes.CmdType)
+	} else if r1.Message.Attributes.ProjectID != "myproject" {
+		log.Fatalf("Attribute projectId is %v, expected 'myproject'", r1.Message.Attributes.CmdType)
 	} else {
 		log.Printf("%v\n", r1.Message.Attributes)
 	}

@@ -20,6 +20,9 @@ func (message *Message) UnmarshalJSON(data []byte) (err error) {
 		return err
 	}
 	err = json.Unmarshal(messageData.Data, &queries)
+	if err != nil {
+		return err
+	}
 	// Removing empty queries
 	queriesFiltered := filterString(queries, stringIsEmpty)
 	// Unescaping double quotes in each query
@@ -86,6 +89,9 @@ func (attribute *Attributes) UnmarshalJSON(data []byte) error {
 		return err
 	} else {
 		err = json.Unmarshal(data, &all)
+		if err != nil {
+			return err
+		}
 		attribute.AccessToken = all.AccessToken
 		attribute.CmdType = all.CmdType
 		attribute.ProjectID = all.ProjectID
