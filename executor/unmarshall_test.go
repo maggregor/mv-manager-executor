@@ -146,7 +146,7 @@ func TestAttributeUnmarshallWorkspaceNoToken(t *testing.T) {
 				"cmdType": "workspace",
 				"projectId": "myproject"
 			},
-			"data": "YWN0aXZhdGluZyBwcm9qZWN0OiBub3RyZS12aWU=",
+			"data": "W10=",
 			"messageId": "2070443601311540",
 			"message_id": "2070443601311540",
 			"publishTime": "2021-02-26T19:13:55.749Z",
