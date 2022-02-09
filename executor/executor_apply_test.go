@@ -49,8 +49,8 @@ func TestCreateVarFile1(t *testing.T) {
 func TestToString1(t *testing.T) {
 	i1 := []string{"SELECT 1", "SELECT 2"}
 	a1 := Attributes{AccessToken: "myAccessToken", ProjectID: "myprojectid", DatasetName: "mydatasetname", Queries: i1}
-	q1 := QueryParameter{MvmName: "mvm_1234", QueryContent: i1[0]}
-	q2 := QueryParameter{MvmName: "mvm_5678", QueryContent: i1[1]}
+	q1 := QueryParameter{MmvName: "mmv_1234", QueryContent: i1[0]}
+	q2 := QueryParameter{MmvName: "mmv_5678", QueryContent: i1[1]}
 	q := []QueryParameter{q1, q2}
 	executor := &ApplyExecutor{a1, "", q, ""}
 	r1 := executor.toString()
@@ -58,8 +58,8 @@ func TestToString1(t *testing.T) {
 dataset_name = "mydatasetname"
 access_token = "myAccessToken"
 queries = {
-	"mvm_1234": "SELECT 1",
-	"mvm_5678": "SELECT 2",
+	"mmv_1234": "SELECT 1",
+	"mmv_5678": "SELECT 2",
 	}
 `
 	if r1 != expected {

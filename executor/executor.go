@@ -35,7 +35,7 @@ func (t *Terraform) init() error {
 }
 
 type QueryParameter struct {
-	MvmName      string
+	MmvName      string
 	QueryContent string
 }
 

@@ -15,7 +15,7 @@ type ApplyExecutor struct {
 
 func (e *ApplyExecutor) setQueries() {
 	for _, query := range e.Attributes.Queries {
-		tmpQ := QueryParameter{MvmName: "mvm_" + hash(query), QueryContent: query}
+		tmpQ := QueryParameter{MmvName: "mmv_" + hash(query), QueryContent: query}
 		e.Queries = append(e.Queries, tmpQ)
 	}
 }
@@ -42,7 +42,7 @@ func (e *ApplyExecutor) toString() string {
 	r += fmt.Sprintf("access_token = %q\n", e.Attributes.AccessToken)
 	r += "queries = {\n"
 	for _, q := range e.Queries {
-		r += fmt.Sprintf("\t%q: %q,\n", q.MvmName, q.QueryContent)
+		r += fmt.Sprintf("\t%q: %q,\n", q.MmvName, q.QueryContent)
 	}
 	r += "\t}\n"
 	log.Println(r)
