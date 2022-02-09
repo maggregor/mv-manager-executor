@@ -3,6 +3,7 @@ package executor
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"strings"
 )
 
@@ -58,6 +59,9 @@ func removeDuplicateStr(s []string) []string {
 		if _, value := allKeys[item]; !value {
 			allKeys[item] = true
 			list = append(list, item)
+		} else {
+			log.Println("WARNING: DUPLICATE QUERY IN OPTIMIZATION PLAN")
+			// TODO: Send a notification to developper if this happens
 		}
 	}
 	return list
