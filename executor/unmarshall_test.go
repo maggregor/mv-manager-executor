@@ -434,3 +434,31 @@ func TestAttributeUnmarshallEscapedQuotesInData(t *testing.T) {
 		log.Fatalf("Query is %v, expected %v", r1.Message.Attributes.Queries[0], `SELECT (FORMAT_DATETIME("%B", DATETIME(pickup_datetime))) IN ("December", "January", "June", "March") AS a_386307744`)
 	}
 }
+
+func TestAttributeUnmarshallMultipleTimeTheSameQuery(t *testing.T) {
+	// data is: ["SELECT (FORMAT_DATETIME(\"%B\", DATETIME(pickup_datetime))) IN (\"December\", \"January\", \"June\", \"March\") AS a_386307744"]
+	i1 := `{
+		"message": {
+			"attributes": {
+				"accessToken": "value",
+				"cmdType": "apply",
+				"projectId": "myproject",
+				"datasetName": "mydataset"
+			},
+			"data": "WyJTRUxFQ1QgTUFYKHZlbmRvcl9pZCkgQVMgYV8xODU5MjE3MDYxIEZST00gYGFjaGlsaW8tZGV2YC5gZXN0ZWJhbl9kYXRhc2V0YC5gdGxjX3llbGxvd190cmlwc18yMDE1X3NtYWxsXzJgIiwiU0VMRUNUIE1BWCh2ZW5kb3JfaWQpIEFTIGFfMTg1OTIxNzA2MSBGUk9NIGBhY2hpbGlvLWRldmAuYGVzdGViYW5fZGF0YXNldGAuYHRsY195ZWxsb3dfdHJpcHNfMjAxNV9zbWFsbF8yYCIsIlNFTEVDVCBNQVgodmVuZG9yX2lkKSBBUyBhXzE4NTkyMTcwNjEgRlJPTSBgYWNoaWxpby1kZXZgLmBlc3RlYmFuX2RhdGFzZXRgLmB0bGNfeWVsbG93X3RyaXBzXzIwMTVfc21hbGxfMmAiLCJTRUxFQ1QgTUFYKHZlbmRvcl9pZCkgQVMgYV8xODU5MjE3MDYxIEZST00gYGFjaGlsaW8tZGV2YC5gZXN0ZWJhbl9kYXRhc2V0YC5gdGxjX3llbGxvd190cmlwc18yMDE1X3NtYWxsXzJgIiwiU0VMRUNUIE1BWCh2ZW5kb3JfaWQpIEFTIGFfMTg1OTIxNzA2MSBGUk9NIGBhY2hpbGlvLWRldmAuYGVzdGViYW5fZGF0YXNldGAuYHRsY195ZWxsb3dfdHJpcHNfMjAxNV9zbWFsbF8yYCJd",
+			"messageId": "2070443601311540",
+			"message_id": "2070443601311540",
+			"publishTime": "2021-02-26T19:13:55.749Z",
+			"publish_time": "2021-02-26T19:13:55.749Z"
+		},
+	    "subscription": "projects/myproject/subscriptions/mysubscription"
+	}`
+	i2 := []byte(i1)
+	var r1 PubSubMessage
+	if err := json.Unmarshal(i2, &r1); err != nil {
+		log.Fatalf("json.Unmarshal: should not be in error %v\n", err)
+	}
+	if len(r1.Message.Attributes.Queries) != 1 {
+		log.Fatalf("There are %v queries, expected 1", len(r1.Message.Attributes.Queries))
+	}
+}

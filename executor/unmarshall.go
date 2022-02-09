@@ -25,6 +25,7 @@ func (message *Message) UnmarshalJSON(data []byte) (err error) {
 	}
 	// Removing empty queries
 	queriesFiltered := filterString(queries, stringIsEmpty)
+	queriesFiltered = removeDuplicateStr(queriesFiltered)
 	// Unescaping double quotes in each query
 	queriesClean := unescapeQuotes(queriesFiltered)
 
@@ -48,6 +49,18 @@ func unescapeQuotes(vs []string) []string {
 
 func stringIsEmpty(s string) bool {
 	return s != ""
+}
+
+func removeDuplicateStr(s []string) []string {
+	allKeys := make(map[string]bool)
+	list := []string{}
+	for _, item := range s {
+		if _, value := allKeys[item]; !value {
+			allKeys[item] = true
+			list = append(list, item)
+		}
+	}
+	return list
 }
 
 // filterString Returns a array of string containing only those that return true when passed
