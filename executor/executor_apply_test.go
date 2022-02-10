@@ -32,9 +32,6 @@ func TestToString1(t *testing.T) {
 	q2 := QueryParameter{DatasetName: "mydataset2", Statement: "SELECT 2", MmvName: "mmv_5678"}
 	i1 := []QueryParameter{q1, q2}
 	a1 := Attributes{AccessToken: "myAccessToken", ProjectID: "myprojectid", Queries: i1}
-	// qp1 := QueryParameter{MmvName: "mmv_1234", QueryContent: i1[0]["mydataset1"]}
-	// qp2 := QueryParameter{MmvName: "mmv_5678", QueryContent: i1[1]["mydataset2"]}
-	// qs := []QueryParameter{qp1, qp2}
 	executor := &ApplyExecutor{a1, "", i1, ""}
 	r1 := executor.toString()
 	expected := `project_id = "myprojectid"

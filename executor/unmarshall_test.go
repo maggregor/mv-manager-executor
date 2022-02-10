@@ -113,6 +113,30 @@ func TestAttributeUnmarshallInvalidCmd2(t *testing.T) {
 	}
 }
 
+func TestUnmarshallError(t *testing.T) {
+	log.Println("TestUnmarshallError")
+	i1 := `{
+		"message": {
+			"attributes": {
+				"accessToken": "value",
+				"cmdType": "workspace",
+				"projectId": "myproject",
+			},
+			"data": "W10=",
+			"messageId": "2070443601311540",
+			"message_id": "2070443601311540",
+			"publishTime": "2021-02-26T19:13:55.749Z",
+			"publish_time": "2021-02-26T19:13:55.749Z"
+		},
+	    "subscription": "projects/myproject/subscriptions/mysubscription"
+	}`
+	i2 := []byte(i1)
+	var r1 PubSubMessage
+	if err := json.Unmarshal(i2, &r1); err == nil {
+		log.Fatalf("json.Unmarshal: should in error: wrong json formatting: %v\n", err)
+	}
+}
+
 func TestAttributeUnmarshallWorkspace(t *testing.T) {
 	log.Println("TestAttributeUnmarshallWorkspace")
 	i1 := `{
