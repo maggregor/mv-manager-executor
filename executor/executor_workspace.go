@@ -5,10 +5,6 @@ type WorkspaceExecutor struct {
 	Command    string
 }
 
-func (e *WorkspaceExecutor) setQueries() {
-	// WorkspaceExecutor does not use this method
-}
-
 func (e *WorkspaceExecutor) setCommand() {
 	e.Command = "terraform workspace"
 	if e.Attributes.CmdType == WORKSPACE {

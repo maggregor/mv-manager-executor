@@ -3,15 +3,13 @@ package executor
 import (
 	"encoding/json"
 	"fmt"
-	"log"
-	"strings"
 )
 
 // UnmarshalJSON Custom unmarshall method for the message Data.
-// Message Data should be a ; delimited list of SQL queries, each representing a
-// Materialized view to be created by TerraformExecutor
+// Message Data should be a list of 1 entry map, each representing a
+// Materialized view to be created by TerraformExecutor. Key is the dataset name, Value is the query statement
 func (message *Message) UnmarshalJSON(data []byte) (err error) {
-	var queries []string
+	var queries []map[string]string
 	messageData := struct {
 		Data       []byte     `json:"data,omitempty"`
 		Attributes Attributes `json:"attributes,omitempty"`
@@ -24,72 +22,27 @@ func (message *Message) UnmarshalJSON(data []byte) (err error) {
 	if err != nil {
 		return err
 	}
-	// Removing empty queries
-	queriesFiltered := filterString(queries, stringIsEmpty)
-	queriesFiltered = removeDuplicateStr(queriesFiltered)
-	// Unescaping double quotes in each query
-	queriesClean := unescapeQuotes(queriesFiltered)
-
-	message.Attributes.Queries = queriesClean
+	qs := make([]QueryParameter, 0)
+	for _, q := range queries {
+		qs = append(qs, constructorQueryParameter(q))
+		qs = removeDuplicateQueryParameterInArray(qs)
+	}
+	message.Attributes.Queries = qs
 	message.Attributes.AccessToken = messageData.Attributes.AccessToken
 	message.Attributes.CmdType = messageData.Attributes.CmdType
 	message.Attributes.ProjectID = messageData.Attributes.ProjectID
-	message.Attributes.DatasetName = messageData.Attributes.DatasetName
 	return
-}
-
-// unescapeQuotes Removes \ from a string if precedes a double quote
-func unescapeQuotes(vs []string) []string {
-	raw := make([]string, 0)
-	for _, v := range vs {
-		r := strings.ReplaceAll(v, "\\", "")
-		raw = append(raw, r)
-	}
-	return raw
-}
-
-func stringIsEmpty(s string) bool {
-	return s != ""
-}
-
-func removeDuplicateStr(s []string) []string {
-	allKeys := make(map[string]bool)
-	list := []string{}
-	for _, item := range s {
-		if _, value := allKeys[item]; !value {
-			allKeys[item] = true
-			list = append(list, item)
-		} else {
-			log.Println("WARNING: DUPLICATE QUERY IN OPTIMIZATION PLAN")
-			// TODO: Send a notification to developper if this happens
-		}
-	}
-	return list
-}
-
-// filterString Returns a array of string containing only those that return true when passed
-// to the function f
-func filterString(vs []string, f func(string) bool) []string {
-	filtered := make([]string, 0)
-	for _, v := range vs {
-		if f(v) {
-			filtered = append(filtered, v)
-		}
-	}
-	return filtered
 }
 
 // UnmarshalJSON Custom unmarshall method for Attributes to check that the payload is valid for terraform executor
 func (attribute *Attributes) UnmarshalJSON(data []byte) error {
 	required := struct {
-		ProjectID   string `json:"projectId"`
-		DatasetName string `json:"datasetName"`
-		CmdType     string `json:"cmdType"`
+		ProjectID string `json:"projectId"`
+		CmdType   string `json:"cmdType"`
 	}{}
 	all := struct {
 		AccessToken string `json:"accessToken,omitempty"`
 		ProjectID   string `json:"projectId"`
-		DatasetName string `json:"datasetName"`
 		CmdType     string `json:"cmdType"`
 	}{}
 	err := json.Unmarshal(data, &required)
@@ -101,9 +54,6 @@ func (attribute *Attributes) UnmarshalJSON(data []byte) error {
 	} else if required.ProjectID == "" {
 		err = fmt.Errorf("projectId is required")
 		return err
-	} else if required.DatasetName == "" && required.CmdType == APPLY {
-		err = fmt.Errorf("datasetName is required when command is apply")
-		return err
 	} else {
 		err = json.Unmarshal(data, &all)
 		if err != nil {
@@ -112,7 +62,6 @@ func (attribute *Attributes) UnmarshalJSON(data []byte) error {
 		attribute.AccessToken = all.AccessToken
 		attribute.CmdType = all.CmdType
 		attribute.ProjectID = all.ProjectID
-		attribute.DatasetName = all.DatasetName
 	}
 	return nil
 }

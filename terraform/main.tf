@@ -2,12 +2,13 @@ variable "project_id" {
   type = string
 }
 
-variable "dataset_name" {
-  type = string
-}
-
-variable "queries" {
-  type = map(any)
+variable "mmvs" {
+  type = list(map(any))
+  default = [{
+    "dataset_name" = "value",
+    "mmv_name"     = "value",
+    "statement"    = "value"
+  }]
 }
 
 variable "access_token" {
@@ -15,8 +16,7 @@ variable "access_token" {
 }
 
 provider "google" {
-  project = var.project_id
-  # credentials = "/home/nico/Workspace/Achilio/dev/achilio-dev-919cf3ede1d0.json"
+  project      = var.project_id
   access_token = var.access_token
 }
 
@@ -29,9 +29,9 @@ terraform {
 }
 
 resource "google_bigquery_table" "mmv" {
-  dataset_id          = var.dataset_name
-  for_each            = var.queries
-  table_id            = each.key
+  count               = length(var.mmvs)
+  dataset_id          = var.mmvs[count.index]["dataset_name"]
+  table_id            = var.mmvs[count.index]["mmv_name"]
   deletion_protection = false
 
   labels = {
@@ -39,6 +39,6 @@ resource "google_bigquery_table" "mmv" {
     generated_by = "achilio"
   }
   materialized_view {
-    query = each.value
+    query = var.mmvs[count.index]["statement"]
   }
 }

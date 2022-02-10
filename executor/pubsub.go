@@ -10,11 +10,10 @@ import (
 // Attributes is the payload of the attributes field in the message of a Pub/Sub event.
 // For the Terraform executor to work for Achilio's Terraview, it needs to follow this structure
 type Attributes struct {
-	AccessToken string   `json:"accessToken,omitempty"`
-	ProjectID   string   `json:"projectId"`
-	DatasetName string   `json:"datasetName"`
-	CmdType     string   `json:"cmdType"`
-	Queries     []string `json:"queries"`
+	AccessToken string           `json:"accessToken,omitempty"`
+	ProjectID   string           `json:"projectId"`
+	CmdType     string           `json:"cmdType"`
+	Queries     []QueryParameter `json:"queries"`
 }
 
 // Message is the payload of the message field of a Pub/Sub event.
@@ -23,7 +22,7 @@ type Attributes struct {
 type Message struct {
 	Data       []byte     `json:"data,omitempty"`
 	Attributes Attributes `json:"attributes,omitempty"`
-	ID         string     `json:"id"`
+	ID         string     `json:"messageId"`
 }
 
 // PubSubMessage is the payload of a Pub/Sub event.
@@ -49,7 +48,7 @@ func PubSub(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Bad Request", http.StatusBadRequest)
 		return
 	}
-
+	log.Printf("Executing message %v", m.Message.ID)
 	t := Terraform{m.Message, nil}
 	if err = t.Execute(); err != nil {
 		http.Error(w, "Internal error with terraform execution", http.StatusInternalServerError)

@@ -12,7 +12,6 @@ type Terraform struct {
 }
 
 type TerraformExecutor interface {
-	setQueries()
 	setCommand()
 	executeShell() error
 }
@@ -35,8 +34,25 @@ func (t *Terraform) init() error {
 }
 
 type QueryParameter struct {
-	MmvName      string
-	QueryContent string
+	DatasetName string
+	MmvName     string
+	Statement   string
+}
+
+// constructorQueryParameter takes a key/value pair and build a single QueryParameter from it
+// the key is the DatasetName, the value is the QueryContent, mmv_{hashe(value)} is the MmvName
+func constructorQueryParameter(m map[string]string) QueryParameter {
+	var qp QueryParameter
+	for k, v := range m {
+		qp.DatasetName = k
+		qp.Statement = unescapeQuotes(v)
+		qp.MmvName = getMmvName(qp.Statement)
+	}
+	return qp
+}
+
+func getMmvName(statement string) string {
+	return "mmv_" + hash(statement)
 }
 
 func hash(s string) string {

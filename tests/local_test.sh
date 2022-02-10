@@ -1,14 +1,12 @@
-# data is: SELECT payment_type, SUM(total_amount) as col1 FROM achilio-dev.nyc_trips.tlc_yellow_trips_2015_small GROUP BY payment_type
+# data is: [{"executor_integration_test":"SELECT COUNT(*) AS a_410576920 FROM `achilio-test`.`executor_integration_test`.`tlc_yellow_trips_2015_small`"}]
 echo '{
     "message": {
         "attributes": {
-            "accessToken": "ya29.a0AfH6SMCjKBDd8QSNQ4zG6yivWNuSFiGkxsjnlstUE28XsQLxjxZ1ls0G2Sl1G3zb8ktn6ZGiy5yV7Q6O8LxncK5EhAeAIcawK1P409DG8WLxxtyJoL3B-bJ5ZHsA5jKLWP1Z09gUgVZZ2HabWAU1gOKji0guHw",
+            "accessToken": "ya29.A0ARrdaM8aOcSqtc1OB92eCIjLJtDDQ_tMZ6hVGq3mDoNZwh9RyEJKlp_FAcgXGZ2QmySK-XCtywx-k8PUgNK2eHKzupkc1qGkyscr1l9Mgwa5NMvjPTY4qv_MXiUTmbojv98Xs3I4AN4PvjZk04BBSM1861PJKA",
             "cmdType": "apply",
-            "projectId": "achilio-dev",
-            "Id": "europe-west-1",
-            "datasetName": "nyc_trips"
+            "projectId": "achilio-test"
         },
-        "data": "U0VMRUNUIHBheW1lbnRfdHlwZSwgU1VNKHRvdGFsX2Ftb3VudCkgYXMgY29sMSBGUk9NIGFjaGlsaW8tZGV2Lm55Y190cmlwcy50bGNfeWVsbG93X3RyaXBzXzIwMTVfc21hbGwgR1JPVVAgQlkgcGF5bWVudF90eXBl",
+        "data": "W3siZXhlY3V0b3JfaW50ZWdyYXRpb25fdGVzdCI6IlNFTEVDVCBDT1VOVCgqKSBBUyBhXzQxMDU3NjkyMCBGUk9NIGBhY2hpbGlvLXRlc3RgLmBleGVjdXRvcl9pbnRlZ3JhdGlvbl90ZXN0YC5gYV90YWJsZWAifV0=",
         "messageId": "2070443601311540",
         "message_id": "2070443601311540",
         "publishTime": "2021-02-26T19:13:55.749Z",

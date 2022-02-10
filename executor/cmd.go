@@ -16,7 +16,6 @@ func (t *Terraform) Execute() error {
 	if err != nil {
 		return err
 	}
-	t.Executor.setQueries()
 	t.Executor.setCommand()
 	if err := t.Executor.executeShell(); err != nil {
 		return err
