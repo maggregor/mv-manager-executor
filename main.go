@@ -11,7 +11,7 @@ import (
 func main() {
 	http.HandleFunc("/", e.PubSub)
 	// Determine port for HTTP service.
-	port := os.Getenv("PORT")
+	port := os.Getenv("ACHILIO_EXECUTOR_PORT")
 	if port == "" {
 		port = "8080"
 		log.Printf("Defaulting to port %s", port)

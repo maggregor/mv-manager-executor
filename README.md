@@ -2,11 +2,6 @@
 
 [![codecov](https://codecov.io/gh/achilio/mv-manager-executor/branch/master/graph/badge.svg?token=OLM9U79QD4)](https://codecov.io/gh/achilio/mv-manager-executor)
 
-## Roadmap
-
--   [x] Handling notification message to build the command to execute
--   [x] Add terraform module to actually execute
-
 ## Run locally
 
 ```
@@ -39,12 +34,18 @@ For the mv-manager-executor to work, the message must have the following attribu
 -   "cmdType": enum("apply", "workspace") // Apply is for creating a new set of views. Workspace is for creating a new workspace (new project activated)
 -   "projectId": string
 -   "accessToken: string
--   "datasetName": string // Not required if cmdType is workspace
 
-The message data is a list of ; separated SELECT queries representing the views to create. The message is sent as a base64 encoded string when using PubSub with the Google SDK or gcloud. But if you are sending the message locally with a direct HTTP request, you need to encode the string in base64 beforehand
+The message data is a list of map with the following structure:
 
-Eg. for "SELECT vendor_id FROM achilio-dev.nyc_trips.tlc_yellow_trips_2015_small GROUP BY vendor_id;SELECT payment_type, SUM(total_amount) as col1 FROM achilio-dev.nyc_trips.tlc_yellow_trips_2015_small GROUP BY payment_type"
+{
+"datasetName": "queryStatement"
+}
+
+It is base64 encoded
+
+Eg.
+[{"mydataset1": "SELECT 1"},{"mydataset2": "SELECT 1"}]
 
 ```
-data: "U0VMRUNUIHZlbmRvcl9pZCBGUk9NIGFjaGlsaW8tZGV2Lm55Y190cmlwcy50bGNfeWVsbG93X3RyaXBzXzIwMTVfc21hbGwgR1JPVVAgQlkgdmVuZG9yX2lkO1NFTEVDVCBwYXltZW50X3R5cGUsIFNVTSh0b3RhbF9hbW91bnQpIGFzIGNvbDEgRlJPTSBhY2hpbGlvLWRldi5ueWNfdHJpcHMudGxjX3llbGxvd190cmlwc18yMDE1X3NtYWxsIEdST1VQIEJZIHBheW1lbnRfdHlwZQ=="
+data: "W3sibXlkYXRhc2V0MSI6ICJTRUxFQ1QgMSJ9LHsibXlkYXRhc2V0MiI6ICJTRUxFQ1QgMSJ9XQ=="
 ```

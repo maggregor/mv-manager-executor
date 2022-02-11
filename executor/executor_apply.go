@@ -13,13 +13,6 @@ type ApplyExecutor struct {
 	VarFile    string // Absolute path to the var file to use
 }
 
-func (e *ApplyExecutor) setQueries() {
-	for _, query := range e.Attributes.Queries {
-		tmpQ := QueryParameter{MmvName: "mmv_" + hash(query), QueryContent: query}
-		e.Queries = append(e.Queries, tmpQ)
-	}
-}
-
 func (e *ApplyExecutor) createVarFile() error {
 	varFile, err := os.CreateTemp(os.TempDir(), "terraview-*")
 	if err != nil {
@@ -38,13 +31,12 @@ func (e *ApplyExecutor) createVarFile() error {
 func (e *ApplyExecutor) toString() string {
 	var r string
 	r = fmt.Sprintf("project_id = %q\n", e.Attributes.ProjectID)
-	r += fmt.Sprintf("dataset_name = %q\n", e.Attributes.DatasetName)
 	r += fmt.Sprintf("access_token = %q\n", e.Attributes.AccessToken)
-	r += "queries = {\n"
-	for _, q := range e.Queries {
-		r += fmt.Sprintf("\t%q: %q,\n", q.MmvName, q.QueryContent)
+	r += "mmvs = [\n"
+	for _, q := range e.Attributes.Queries {
+		r += fmt.Sprintf("\t{\n\t\t\"mmv_name\": %q,\n\t\t\"dataset_name\": %q,\n\t\t\"statement\": %q\n\t},\n", q.MmvName, q.DatasetName, q.Statement)
 	}
-	r += "\t}\n"
+	r += "]\n"
 	log.Println(r)
 	return r
 }
