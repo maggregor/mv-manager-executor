@@ -44,6 +44,7 @@ The message data is a list of map with the following structure:
 It is base64 encoded
 
 Eg.
+
 [{"mydataset1": "SELECT 1"},{"mydataset2": "SELECT 1"}]
 
 ```

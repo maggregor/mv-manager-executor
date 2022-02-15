@@ -1,6 +1,6 @@
 tests
 .vscode/
-.terraform/
+*.terraform/*
 .gcloudignore
 .git
 .gitignore
