@@ -9,7 +9,7 @@ import (
 // Message Data should be a list of 1 entry map, each representing a
 // Materialized view to be created by TerraformExecutor. Key is the dataset name, Value is the query statement
 func (message *Message) UnmarshalJSON(data []byte) (err error) {
-	var queries []map[string]string
+	var queries []QueryParameter
 	messageData := struct {
 		Data       []byte     `json:"data,omitempty"`
 		Attributes Attributes `json:"attributes,omitempty"`
@@ -22,11 +22,15 @@ func (message *Message) UnmarshalJSON(data []byte) (err error) {
 	if err != nil {
 		return err
 	}
-	qs := make([]QueryParameter, 0)
-	for _, q := range queries {
-		qs = append(qs, constructorQueryParameter(q))
-		qs = removeDuplicateQueryParameterInArray(qs)
+	// qs := make([]QueryParameter, 0)
+	// for _, q := range queries {
+	// 	qs = append(qs, constructorQueryParameter(q))
+	// 	qs = removeDuplicateQueryParameterInArray(qs)
+	// }
+	if err = isMessageInvalid(queries); err != nil {
+		return err
 	}
+	qs := removeDuplicateQueryParameterInArray(queries)
 	message.Attributes.Queries = qs
 	message.Attributes.AccessToken = messageData.Attributes.AccessToken
 	message.Attributes.CmdType = messageData.Attributes.CmdType

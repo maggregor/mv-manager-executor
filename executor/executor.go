@@ -34,9 +34,9 @@ func (t *Terraform) init() error {
 }
 
 type QueryParameter struct {
-	DatasetName string
-	MmvName     string
-	Statement   string
+	DatasetName string `json:"datasetName"`
+	MmvName     string `json:"mmvName"`
+	Statement   string `json:"statement"`
 }
 
 // constructorQueryParameter takes a key/value pair and build a single QueryParameter from it
@@ -59,4 +59,22 @@ func hash(s string) string {
 	h := fnv.New32()
 	h.Write([]byte(s))
 	return fmt.Sprint(h.Sum32())
+}
+
+func isMessageInvalid(queries []QueryParameter) error {
+	for _, q := range queries {
+		if q.DatasetName == "" {
+			err := fmt.Errorf("datasetName is required in message for all queries")
+			return err
+		}
+		if q.MmvName == "" {
+			err := fmt.Errorf("mmvName is required in message for all queries")
+			return err
+		}
+		if q.Statement == "" {
+			err := fmt.Errorf("statement is required in message for all queries")
+			return err
+		}
+	}
+	return nil
 }

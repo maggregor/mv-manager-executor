@@ -31,6 +31,7 @@ func removeDuplicateStrInArray(s []string) []string {
 }
 
 func removeDuplicateQueryParameterInArray(qs []QueryParameter) []QueryParameter {
+	// TODO: Duplicate query should only be dataset and statement, not mmvName
 	rqs := make([]QueryParameter, 0)
 	allKeys := make(map[QueryParameter]bool)
 	for _, item := range qs {

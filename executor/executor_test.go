@@ -70,3 +70,31 @@ func TestInitUnknown(t *testing.T) {
 		log.Printf("OK")
 	}
 }
+
+func TestIsExecutorInvalid(t *testing.T) {
+	a := ApplyExecutor{Attributes{}, "", nil, ""}
+	q1 := QueryParameter{MmvName: "achilio_1234", DatasetName: "mydataset", Statement: ""}
+	q2 := QueryParameter{MmvName: "achilio_1234", DatasetName: "", Statement: "SELECT 1"}
+	q3 := QueryParameter{MmvName: "", DatasetName: "mydataset", Statement: "SELECT 1"}
+	q4 := QueryParameter{MmvName: "achilio_1234", DatasetName: "mydataset", Statement: "SELECT 1"}
+	l1 := []QueryParameter{q1, q4}
+	l2 := []QueryParameter{q2, q4}
+	l3 := []QueryParameter{q3, q4}
+	l4 := []QueryParameter{q4, q4}
+	a.Queries = l1
+	if err := isMessageInvalid(a.Queries); err == nil {
+		log.Fatalf("l1 should be in error")
+	}
+	a.Queries = l2
+	if err := isMessageInvalid(a.Queries); err == nil {
+		log.Fatalf("l2 should be in error")
+	}
+	a.Queries = l3
+	if err := isMessageInvalid(a.Queries); err == nil {
+		log.Fatalf("l3 should be in error")
+	}
+	a.Queries = l4
+	if err := isMessageInvalid(a.Queries); err != nil {
+		log.Fatalf("l4 should not be in error: got %v", err)
+	}
+}
