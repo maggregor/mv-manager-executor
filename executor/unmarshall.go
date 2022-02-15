@@ -22,11 +22,6 @@ func (message *Message) UnmarshalJSON(data []byte) (err error) {
 	if err != nil {
 		return err
 	}
-	// qs := make([]QueryParameter, 0)
-	// for _, q := range queries {
-	// 	qs = append(qs, constructorQueryParameter(q))
-	// 	qs = removeDuplicateQueryParameterInArray(qs)
-	// }
 	if err = isMessageInvalid(queries); err != nil {
 		return err
 	}
