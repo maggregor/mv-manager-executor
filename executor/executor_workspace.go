@@ -9,8 +9,7 @@ func (e *WorkspaceExecutor) setCommand() {
 	e.Command = "terraform workspace"
 	if e.Attributes.CmdType == WORKSPACE {
 		e.Command += " new"
-	} else if e.Attributes.CmdType == APPLY {
-		// This should never be something else for now
+	} else if e.Attributes.CmdType == APPLY || e.Attributes.CmdType == DESTROY {
 		e.Command += " select"
 	}
 	e.Command += " " + e.Attributes.ProjectID

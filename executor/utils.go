@@ -46,18 +46,6 @@ func removeDuplicateQueryParameterInArray(qs []QueryParameter) []QueryParameter 
 	return rqs
 }
 
-// // filterString Returns a array of string containing only those that return true when passed
-// // to the function f
-// func filterString(vs []string, f func(string) bool) []string {
-// 	filtered := make([]string, 0)
-// 	for _, v := range vs {
-// 		if f(v) {
-// 			filtered = append(filtered, v)
-// 		}
-// 	}
-// 	return filtered
-// }
-
 // filterMap delete entries from a map that return false when passed to function f
 func filterMap(ms map[string]string, f func(string) bool) {
 	for k, v := range ms {

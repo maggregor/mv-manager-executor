@@ -5,24 +5,6 @@ import (
 	"testing"
 )
 
-func TestHashName1(t *testing.T) {
-	s1 := "SELECT 1"
-	r1 := hash(s1)
-	expected := "2813671660"
-	if r1 != expected {
-		log.Fatalf("Hash is %v, expected %v", r1, expected)
-	}
-}
-
-func TestHashName2(t *testing.T) {
-	s2 := "SELECT payment_type, SUM(total_amount) as col1 FROM achilio-dev.nyc_trips.tlc_yellow_trips_2015_small GROUP BY payment_type"
-	r2 := hash(s2)
-	expected := "2720750463"
-	if r2 != expected {
-		log.Fatalf("Hash is %v, expected %v", r2, expected)
-	}
-}
-
 func TestInitApply(t *testing.T) {
 	terra := Terraform{Message: Message{Attributes: Attributes{CmdType: "apply"}}}
 	err := terra.init()
@@ -52,6 +34,24 @@ func TestInitWorkspace(t *testing.T) {
 		log.Printf("OK")
 	default:
 		log.Fatalf("Executor is of unsupported type, should be Workspace")
+	}
+}
+
+func TestInitDestroy(t *testing.T) {
+	terra := Terraform{Message: Message{Attributes: Attributes{CmdType: "destroy"}}}
+	err := terra.init()
+	if err != nil {
+		log.Fatalf("Init should not be in error")
+	}
+	switch terra.Executor.(type) {
+	case *ApplyExecutor:
+		log.Fatalf("Executor is of type Apply, should be Destroy")
+	case *WorkspaceExecutor:
+		log.Fatalf("Executor is of type Workspace, should be Destroy")
+	case *DestroyExecutor:
+		log.Printf("OK")
+	default:
+		log.Fatalf("Executor is of unsupported type, should be Destroy")
 	}
 }
 

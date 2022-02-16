@@ -47,8 +47,8 @@ func (attribute *Attributes) UnmarshalJSON(data []byte) error {
 	err := json.Unmarshal(data, &required)
 	if err != nil {
 		return err
-	} else if required.CmdType == "" || (required.CmdType != WORKSPACE && required.CmdType != APPLY) {
-		err = fmt.Errorf("cmdType is required and must be equal to either 'workspace' or 'apply'")
+	} else if required.CmdType != WORKSPACE && required.CmdType != APPLY && required.CmdType != DESTROY {
+		err = fmt.Errorf("cmdType is required and must be equal to either 'workspace', 'apply', or 'destroy'")
 		return err
 	} else if required.ProjectID == "" {
 		err = fmt.Errorf("projectId is required")
