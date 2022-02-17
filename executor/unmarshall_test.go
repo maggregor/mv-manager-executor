@@ -2,6 +2,7 @@ package executor
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"testing"
 )
@@ -307,6 +308,99 @@ func TestAttributeUnmarshallValidData2(t *testing.T) {
 	}
 }
 
+func TestAttributeUnmarshallApplyInvalidDataStatement(t *testing.T) {
+	log.Println("TestAttributeUnmarshallApplyInvalidDataStatement")
+	// data is: [{"datasetName":"mydataset","mmvName":"achilio_1234","statement":"SELECT 1"},{"datasetName":"mydataset","mmvName":"achilio_1234"}]
+	i1 := `{
+		"message": {
+			"attributes": {
+				"accessToken": "value",
+				"cmdType": "apply",
+				"projectId": "myproject"
+			},
+			"data": "W3siZGF0YXNldE5hbWUiOiJteWRhdGFzZXQiLCJtbXZOYW1lIjoiYWNoaWxpb18xMjM0Iiwic3RhdGVtZW50IjoiU0VMRUNUIDEifSx7ImRhdGFzZXROYW1lIjoibXlkYXRhc2V0IiwibW12TmFtZSI6ImFjaGlsaW9fMTIzNCJ9XQ==",
+			"messageId": "2070443601311540",
+			"message_id": "2070443601311540",
+			"publishTime": "2021-02-26T19:13:55.749Z",
+			"publish_time": "2021-02-26T19:13:55.749Z"
+		},
+	    "subscription": "projects/myproject/subscriptions/mysubscription"
+	}`
+	i2 := []byte(i1)
+	e := fmt.Errorf("statement is required in message for all queries")
+	var r1 PubSubMessage
+	err := json.Unmarshal(i2, &r1)
+	if err == nil {
+		log.Fatalf("json.Unmarshal: should be in error\n")
+		return
+	}
+	if err.Error() != e.Error() {
+		log.Fatalf("Expected error %v, got %v", e, err)
+	}
+}
+
+func TestAttributeUnmarshallApplyInvalidDataDataset(t *testing.T) {
+	log.Println("TestAttributeUnmarshallApplyInvalidDataStatement")
+	// data is: [{"datasetName":"mydataset","mmvName":"achilio_1234","statement":"SELECT 1"},{"mmvName":"achilio_1234","statement":"SELECT 2"}]
+	i1 := `{
+		"message": {
+			"attributes": {
+				"accessToken": "value",
+				"cmdType": "apply",
+				"projectId": "myproject"
+			},
+			"data": "W3siZGF0YXNldE5hbWUiOiJteWRhdGFzZXQiLCJtbXZOYW1lIjoiYWNoaWxpb18xMjM0Iiwic3RhdGVtZW50IjoiU0VMRUNUIDEifSx7Im1tdk5hbWUiOiJhY2hpbGlvXzEyMzQiLCJzdGF0ZW1lbnQiOiJTRUxFQ1QgMiJ9XQ==",
+			"messageId": "2070443601311540",
+			"message_id": "2070443601311540",
+			"publishTime": "2021-02-26T19:13:55.749Z",
+			"publish_time": "2021-02-26T19:13:55.749Z"
+		},
+	    "subscription": "projects/myproject/subscriptions/mysubscription"
+	}`
+	i2 := []byte(i1)
+	e := fmt.Errorf("datasetName is required in message for all queries")
+	var r1 PubSubMessage
+	err := json.Unmarshal(i2, &r1)
+	if err == nil {
+		log.Fatalf("json.Unmarshal: should be in error\n")
+		return
+	}
+	if err.Error() != e.Error() {
+		log.Fatalf("Expected error %v, got %v", e, err)
+	}
+}
+
+func TestAttributeUnmarshallApplyInvalidDataMmvName(t *testing.T) {
+	log.Println("TestAttributeUnmarshallApplyInvalidDataMmvName")
+	// data is: [{"datasetName":"mydataset","mmvName":"achilio_1234","statement":"SELECT 1"},{"statement":"SELECT 2","datasetName":"mydataset"}]
+	i1 := `{
+		"message": {
+			"attributes": {
+				"accessToken": "value",
+				"cmdType": "apply",
+				"projectId": "myproject"
+			},
+			"data": "W3siZGF0YXNldE5hbWUiOiJteWRhdGFzZXQiLCJtbXZOYW1lIjoiYWNoaWxpb18xMjM0Iiwic3RhdGVtZW50IjoiU0VMRUNUIDEifSx7InN0YXRlbWVudCI6IlNFTEVDVCAyIiwiZGF0YXNldE5hbWUiOiJteWRhdGFzZXQifV0=",
+			"messageId": "2070443601311540",
+			"message_id": "2070443601311540",
+			"publishTime": "2021-02-26T19:13:55.749Z",
+			"publish_time": "2021-02-26T19:13:55.749Z"
+		},
+	    "subscription": "projects/myproject/subscriptions/mysubscription"
+	}`
+	i2 := []byte(i1)
+	e := fmt.Errorf("mmvName is required in message for all queries")
+	var r1 PubSubMessage
+	err := json.Unmarshal(i2, &r1)
+	if err == nil {
+		log.Fatalf("json.Unmarshal: should be in error\n")
+		return
+	}
+	if err.Error() != e.Error() {
+		log.Fatalf("Expected error %v, got %v", e, err)
+	}
+}
+
 func TestAttributeUnmarshallMessageDataEmpty(t *testing.T) {
 	log.Println("TestAttributeUnmarshallMessageDataEmpty")
 	i1 := `{
@@ -447,5 +541,38 @@ func TestAttributeUnmarshallDuplicateQuery(t *testing.T) {
 	}
 	if len(r1.Message.Attributes.Queries) != 3 {
 		log.Fatalf("There are %v queries, expected 3", len(r1.Message.Attributes.Queries))
+	}
+}
+
+func TestAttributeUnmarshallDestroy(t *testing.T) {
+	log.Println("TestAttributeUnmarshallDestroy")
+	i1 := `{
+		"message": {
+			"attributes": {
+				"accessToken": "value",
+				"cmdType": "destroy",
+				"projectId": "myproject"
+			},
+			"data": "W10=",
+			"messageId": "2070443601311540",
+			"message_id": "2070443601311540",
+			"publishTime": "2021-02-26T19:13:55.749Z",
+			"publish_time": "2021-02-26T19:13:55.749Z"
+		},
+	    "subscription": "projects/myproject/subscriptions/mysubscription"
+	}`
+	i2 := []byte(i1)
+	var r1 PubSubMessage
+	if err := json.Unmarshal(i2, &r1); err != nil {
+		log.Fatalf("json.Unmarshal: should not be in error: %v\n", err)
+		return
+	} else if r1.Message.Attributes.CmdType != "destroy" {
+		log.Fatalf("Attribute cmdType is %v, expected 'destroy'", r1.Message.Attributes.CmdType)
+	} else if r1.Message.Attributes.ProjectID != "myproject" {
+		log.Fatalf("Attribute projectId is %v, expected 'myproject'", r1.Message.Attributes.ProjectID)
+	} else if r1.Message.Attributes.AccessToken != "value" {
+		log.Fatalf("Attribute accessToken is %v, expected 'value'", r1.Message.Attributes.AccessToken)
+	} else {
+		log.Printf("%v\n", r1.Message.Attributes)
 	}
 }

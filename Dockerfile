@@ -30,6 +30,8 @@ RUN set -x && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -
 # Install Terraform
 ENV TERRAFORM_VERSION 1.1.3
 ENV TERRAFORM_DIR /terraform
+ENV TF_IN_AUTOMATION yes
+
 RUN wget https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
 RUN unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip -d /bin && rm -f terraform_${TERRAFORM_VERSION}_linux_amd64.zip
 COPY --from=builder /app/terraform ${TERRAFORM_DIR}
