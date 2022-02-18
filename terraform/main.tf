@@ -2,11 +2,6 @@ variable "project_id" {
   type = string
 }
 
-variable "env" {
-  type    = string
-  default = "dev"
-}
-
 variable "mmvs" {
   type = list(map(any))
   default = [{
@@ -18,12 +13,6 @@ variable "mmvs" {
 
 variable "access_token" {
   type = string
-}
-
-locals {
-  achilio_env_project_id = format("achilio-%s", var.env)
-  achilio_env_bucket     = format("achilio_%s_executor_tfstate", var.env)
-  achilio_env_prefix     = format("terraform_%s/tfstate", var.env)
 }
 
 provider "google" {
