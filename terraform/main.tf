@@ -2,6 +2,11 @@ variable "project_id" {
   type = string
 }
 
+variable "env" {
+  type    = string
+  default = "dev"
+}
+
 variable "mmvs" {
   type = list(map(any))
   default = [{
@@ -15,16 +20,21 @@ variable "access_token" {
   type = string
 }
 
+locals {
+  achilio_env_project_id = format("achilio-%s", var.env)
+  achilio_env_bucket     = format("achilio_%s_executor_tfstate", var.env)
+  achilio_env_prefix     = format("terraform_%s/tfstate", var.env)
+}
+
 provider "google" {
   project      = var.project_id
   access_token = var.access_token
 }
 
 terraform {
-  backend "s3" {
-    bucket = "achilio-tfstate"
-    key    = "terraform/state"
-    region = "eu-west-1"
+  backend "gcs" {
+    bucket = "achilio_executor_tfstate"
+    prefix = "terraform/state"
   }
 }
 
