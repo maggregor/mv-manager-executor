@@ -48,7 +48,7 @@ steps:
       - "VCS_PULL_REQUEST=$_PR_NUMBER"
       - "CI_BUILD_ID=$BUILD_ID"
       - "CODECOV_TOKEN=9c0472f6-4cf8-477e-b446-bec89b17af36" # _CODECOV_TOKEN is user user substituion variable specified in my cloud build trigger
-images: ["gcr.io/achilio-$ENV/mvm-executor"]
+images: ["gcr.io/achilio-${_ENV}/mvm-executor"]
 substitutions:
   _ENV: dev
 options:
