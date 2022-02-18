@@ -9,7 +9,7 @@ import (
 func TestSetCommandApply1(t *testing.T) {
 	a1 := Attributes{AccessToken: "myAccessToken", ProjectID: "myprojectid", Queries: nil}
 	executor := &ApplyExecutor{a1, "", nil, "/tmp/varfile1"}
-	expected := "terraform apply -auto-approve -var-file /tmp/varfile1"
+	expected := "terraform apply -auto-approve -no-color -var-file /tmp/varfile1"
 	executor.setCommand()
 	if executor.Command != expected {
 		log.Fatalf("Command is '%v', expected '%v'", executor.Command, expected)

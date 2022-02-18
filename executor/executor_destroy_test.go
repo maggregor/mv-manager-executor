@@ -9,7 +9,7 @@ import (
 func TestSetCommandDestroy1(t *testing.T) {
 	a1 := Attributes{AccessToken: "myAccessToken", ProjectID: "myprojectid", Queries: nil}
 	executor := &DestroyExecutor{a1, "", "/tmp/varfile1"}
-	expected := "terraform destroy -auto-approve -var-file /tmp/varfile1"
+	expected := "terraform destroy -auto-approve -no-color -var-file /tmp/varfile1"
 	executor.setCommand()
 	if executor.Command != expected {
 		log.Fatalf("Command is '%v', expected '%v'", executor.Command, expected)
