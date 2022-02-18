@@ -21,10 +21,9 @@ provider "google" {
 }
 
 terraform {
-  backend "s3" {
-    bucket = "achilio-tfstate"
-    key    = "terraform/state"
-    region = "eu-west-1"
+  backend "gcs" {
+    bucket = "achilio_executor_tfstate"
+    prefix = "terraform/state"
   }
 }
 
