@@ -13,11 +13,11 @@ steps:
       ]
   # Build the container image
   - name: "gcr.io/cloud-builders/docker"
-    args: ["build", "-t", "gcr.io/achilio-$ENV/mvm-executor", "."]
+    args: ["build", "-t", "gcr.io/achilio-${_ENV}/mvm-executor", "."]
     env: ["TERRAFORM_VERSION=1.1.3"]
   # Push the container image to Container Registry
   - name: "gcr.io/cloud-builders/docker"
-    args: ["push", "gcr.io/achilio-$ENV/mvm-executor"]
+    args: ["push", "gcr.io/achilio-${_ENV}/mvm-executor"]
   # Deploy container image to Cloud Run
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
     entrypoint: gcloud
@@ -28,7 +28,7 @@ steps:
         "deploy",
         "mvm-executor",
         "--image",
-        "gcr.io/achilio-$ENV/mvm-executor",
+        "gcr.io/achilio-${_ENV}/mvm-executor",
         "--region",
         "europe-west1",
         "--platform",
@@ -49,8 +49,7 @@ steps:
       - "CI_BUILD_ID=$BUILD_ID"
       - "CODECOV_TOKEN=9c0472f6-4cf8-477e-b446-bec89b17af36" # _CODECOV_TOKEN is user user substituion variable specified in my cloud build trigger
 images: ["gcr.io/achilio-$ENV/mvm-executor"]
-options:
-  env:
-    - "ENV=dev"
+substitutions:
+  _ENV: dev
 options:
   logging: CLOUD_LOGGING_ONLY
