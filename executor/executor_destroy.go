@@ -13,7 +13,7 @@ type DestroyExecutor struct {
 }
 
 func (e *DestroyExecutor) setCommand() {
-	e.Command = "terraform destroy -auto-approve"
+	e.Command = "terraform destroy -auto-approve -no-color"
 	e.Command += " -var-file " + e.VarFile
 }
 

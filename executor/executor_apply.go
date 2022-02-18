@@ -42,6 +42,6 @@ func (e *ApplyExecutor) toString() string {
 }
 
 func (e *ApplyExecutor) setCommand() {
-	e.Command = "terraform apply -auto-approve"
+	e.Command = "terraform apply -auto-approve -no-color"
 	e.Command += " -var-file " + e.VarFile
 }

@@ -8,9 +8,9 @@ type WorkspaceExecutor struct {
 func (e *WorkspaceExecutor) setCommand() {
 	e.Command = "terraform workspace"
 	if e.Attributes.CmdType == WORKSPACE {
-		e.Command += " new"
+		e.Command += " new -no-color"
 	} else if e.Attributes.CmdType == APPLY || e.Attributes.CmdType == DESTROY {
-		e.Command += " select"
+		e.Command += " select -no-color"
 	}
 	e.Command += " " + e.Attributes.ProjectID
 }

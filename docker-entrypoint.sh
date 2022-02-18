@@ -1,6 +1,6 @@
 #!/bin/bash
 
-terraform init
+terraform init -no-color
 if [ "$?" != "0" ]; then
     # If terraform init fails, don't start the container
     exit
