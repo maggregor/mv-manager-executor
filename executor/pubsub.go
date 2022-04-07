@@ -14,7 +14,7 @@ type Attributes struct {
 	ProjectID      string           `json:"projectId"`
 	CmdType        string           `json:"cmdType"`
 	Queries        []QueryParameter `json:"queries"`
-	ServiceAccount string           `json:"serviceAccount"`
+	ServiceAccount ServiceAccount   `json:"serviceAccount"`
 }
 
 // Message is the payload of the message field of a Pub/Sub event.

@@ -31,7 +31,9 @@ func (message *Message) UnmarshalJSON(data []byte) (err error) {
 		return err
 	}
 	qs := removeDuplicateQueryParameterInArray(m.Qs)
-	message.Attributes.ServiceAccount = m.Sa
+	var sa ServiceAccount
+	err = json.Unmarshal([]byte(m.Sa), &sa)
+	message.Attributes.ServiceAccount = sa
 	message.Attributes.Queries = qs
 	message.Attributes.AccessToken = messageData.Attributes.AccessToken
 	message.Attributes.CmdType = messageData.Attributes.CmdType

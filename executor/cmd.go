@@ -43,7 +43,7 @@ func (e *ApplyExecutor) executeShell() error {
 		return err
 	}
 	// Write service account file
-	err := e.writeServiceAccount(e.Attributes.ServiceAccount)
+	err := e.writeServiceAccount(e.Attributes.ServiceAccount.toString())
 	if err != nil {
 		return err
 	}
@@ -69,7 +69,7 @@ func (e *DestroyExecutor) executeShell() error {
 		return err
 	}
 	// Write service account file
-	err := e.writeServiceAccount(e.Attributes.ServiceAccount)
+	err := e.writeServiceAccount(e.Attributes.ServiceAccount.toString())
 	if err != nil {
 		return err
 	}
