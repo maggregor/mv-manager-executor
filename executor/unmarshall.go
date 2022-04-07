@@ -23,21 +23,22 @@ func (message *Message) UnmarshalJSON(data []byte) (err error) {
 	if err != nil {
 		return err
 	}
-	err = json.Unmarshal(messageData.Data, &m)
-	if err != nil {
-		return err
-	}
-	if err = isMessageInvalid(m.Qs); err != nil {
-		return err
-	}
-	qs := removeDuplicateQueryParameterInArray(m.Qs)
-	var sa ServiceAccount
-	err = json.Unmarshal([]byte(m.Sa), &sa)
-	message.Attributes.ServiceAccount = sa
-	message.Attributes.Queries = qs
-	message.Attributes.AccessToken = messageData.Attributes.AccessToken
 	message.Attributes.CmdType = messageData.Attributes.CmdType
 	message.Attributes.ProjectID = messageData.Attributes.ProjectID
+	if message.Attributes.CmdType != WORKSPACE {
+		err = json.Unmarshal(messageData.Data, &m)
+		if err != nil {
+			return err
+		}
+		if err = isMessageInvalid(m.Qs); err != nil {
+			return err
+		}
+		qs := removeDuplicateQueryParameterInArray(m.Qs)
+		var sa ServiceAccount
+		err = json.Unmarshal([]byte(m.Sa), &sa)
+		message.Attributes.ServiceAccount = sa
+		message.Attributes.Queries = qs
+	}
 	return
 }
 
