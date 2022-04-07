@@ -1,16 +1,31 @@
+#!/bin/bash
+
 # data is: [{"executor_integration_test":"SELECT COUNT(*) AS a_410576920 FROM `achilio-test`.`executor_integration_test`.`tlc_yellow_trips_2015_small`"}]
-echo '{
-    "message": {
-        "attributes": {
-            "accessToken": "ya29.A0ARrdaM8aOcSqtc1OB92eCIjLJtDDQ_tMZ6hVGq3mDoNZwh9RyEJKlp_FAcgXGZ2QmySK-XCtywx-k8PUgNK2eHKzupkc1qGkyscr1l9Mgwa5NMvjPTY4qv_MXiUTmbojv98Xs3I4AN4PvjZk04BBSM1861PJKA",
-            "cmdType": "apply",
-            "projectId": "achilio-test"
-        },
-        "data": "W3siZXhlY3V0b3JfaW50ZWdyYXRpb25fdGVzdCI6IlNFTEVDVCBDT1VOVCgqKSBBUyBhXzQxMDU3NjkyMCBGUk9NIGBhY2hpbGlvLXRlc3RgLmBleGVjdXRvcl9pbnRlZ3JhdGlvbl90ZXN0YC5gYV90YWJsZWAifV0=",
-        "messageId": "2070443601311540",
-        "message_id": "2070443601311540",
-        "publishTime": "2021-02-26T19:13:55.749Z",
-        "publish_time": "2021-02-26T19:13:55.749Z"
-    },
-   "subscription": "projects/myproject/subscriptions/mysubscription"
-}' | http POST localhost:8080
+SA='{"serviceAccount":"{\n  \"type\": \"service_account\",\n  \"project_id\": \"achilio-dev\",\n  \"private_key_id\": \"919cf3ede1d02b382ccd34a9be6880c9ddb61806\",\n  \"private_key\": \"-----BEGIN PRIVATE KEY-----\\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQD1vbDOs4oskU85\\nF7mI4SM3PmK1koOcxH6qLLv/4aUaAwvilGjdYXLY8bdWHCdk8xhtMThVdSw4MAUt\\n65VTR8Ugt610jNGVpo9/1lCqnhkG2p3jkPPE5xSu3SfdCqyO0Ti4nXKQF+msDQVI\\nru52z7tkrSEVNyu74lDjK40Iqo44cvpsUujxrAfwd3SXKKjp7/BhrdySqHVh5V0c\\n64mltFVUC/LOxmCjsRB7GRTq5PmItZxN7O7g/VucKW0V9FVQ+MVxm58bjtiysSX1\\nVRSs04ujD3KtheZulwb/FlkFm/vNK4fwmTIfuEYnqbqK0yo04fT029UjoijLvGyc\\njW8EmxO7AgMBAAECggEARxnVWFkWN4LrmydEJViOqeNBCCwWLHul8nLzCjwtWvNa\\nsvohxTv20NJPK3kF5O15Oc6t7/vxCWjLdtfc4rW3UZoTc89yrIv+pQxLVrJbp2IF\\noNxFy8jYcSfH6uq1trTOZowXo51nnMI/ryH+GR5Np/l3wv2th7UZlkD5k3JVp/r7\\nWV768UX6kyRlT2k+K1z9A9q4eptzgPCKCYxY+EfqOa7gZeJAV7163iS+F0Ik1le7\\nFwkegShVzbvAhLHKDncGTJV8b5zTN+dfDyaN22+pfGCmIKPntt2nk/PX1BRABufy\\nxe/MNwOZmruQ9AKh4XRYbT1k6/BOcl3Mt8rksYRFEQKBgQD7saOSWXPNG+OeowZs\\n2NmeZ1PJFZE2zkvqfzy0YsSzQVaQpIrUIPHht1/oSfhzBdZeqcN5RY6to4kgoi+h\\niO2crBkFFcqFVxgkvnQr9ZIxZgtpZ1Zfr9u79At0t8z3cP62OrYgxfddhJ/pZN3K\\n5I50fPT/17NxJ8IA9LEJwodWzQKBgQD58fqx4gCAQ0Ue4w+3pNK0JL9hekiZ+I6U\\neXgKT4ikndvVEpIV0BTE0PWSv26rtmj0l5p+TEDDpwHMFOiMybrmn5pnMOzRAykE\\nXdHbDaOgAmTbOCvnQ7jNkrSLXMsZs9lO6tsgmG0deVwDbjhBlYcTeCyTV11PTFQT\\n02Ry6k9EpwKBgE32PEB8zM3fsaXVwYu9r8rNHrrOn2hmhkVgnCET5vHPb0zmaspC\\nWiocbuy43OhkCn7P/uh1jzhhy3v8QNy8WT2KYUWd9llPHP9krv9e1aXPggFoLOz+\\nwAV8FoBU3nxW188CaJ/GMlUZW58jyz+phCa4/fqxibenJQS+xofLZbiRAoGBAOLe\\nLy0S9F13sd+tPfD03IPC7yutcQTAxboi30CMnHy/BHDMoGjILHHRMXX36J5XvcB1\\ncze8QvTUPB9fww03djwrFl0f3XSCJ9LczcTFBoYQZjdNLxyFLdL6nIH6wiccRd0J\\n88gMUs5z/37lpo5xCOA1LlC29e0qXQ55zC06XKT1AoGAOfCSiyUQx4ERamG6B870\\niqsng1PXbzg6ev+5Z8fV80AFG1brdI9iRteLJOcpaAgddHZXpKX0vVKrA2OobR5b\\nX24Iza4xNZ8YQALeVCxJ71eyEr7C6I4dBabeW/OKJLalzQKPRlc4BOnXmS/Prtuc\\nPPecphFyWhjOSUNzE6EkS2E=\\n-----END PRIVATE KEY-----\\n\",\n  \"client_email\": \"dev-594@achilio-dev.iam.gserviceaccount.com\",\n  \"client_id\": \"109260429858541453463\",\n  \"auth_uri\": \"https://accounts.google.com/o/oauth2/auth\",\n  \"token_uri\": \"https://oauth2.googleapis.com/token\",\n  \"auth_provider_x509_cert_url\": \"https://www.googleapis.com/oauth2/v1/certs\",\n  \"client_x509_cert_url\": \"https://www.googleapis.com/robot/v1/metadata/x509/dev-594%40achilio-dev.iam.gserviceaccount.com\"\n}\n","queries":[{"datasetName":"nyc_trips","statement":"SELECT payment_type AS a_496932397, passenger_count AS a_237219114, rate_code AS a_216081900, COUNT(*) AS a_410576920 FROM `achilio-dev`.`nyc_trips`.`nyc_trips_small_2015` GROUP BY a_496932397, a_237219114, a_216081900","mmvName":"nyc_trips_small_2015_achilio_1663022729"},{"datasetName":"nyc_trips","statement":"SELECT payment_type AS a_496932397, passenger_count AS a_237219114, TIMESTAMP_TRUNC(pickup_datetime, WEEK) AS a_652037144, SUM(tip_amount) AS a_238909520 FROM `achilio-dev`.`nyc_trips`.`nyc_trips_small_2015` GROUP BY a_496932397, a_237219114, a_652037144","mmvName":"nyc_trips_small_2015_achilio_154422413"},{"datasetName":"nyc_trips","statement":"SELECT payment_type AS a_496932397, passenger_count AS a_237219114, rate_code AS a_216081900, AVG(fare_amount) AS a_2046698102 FROM `achilio-dev`.`nyc_trips`.`nyc_trips_small_2015` GROUP BY a_496932397, a_237219114, a_216081900","mmvName":"nyc_trips_small_2015_achilio_1323788785"},{"datasetName":"nyc_trips","statement":"SELECT payment_type AS a_496932397, passenger_count AS a_237219114, AVG(fare_amount) AS a_2046698102 FROM `achilio-dev`.`nyc_trips`.`nyc_trips_small_2015` GROUP BY a_496932397, a_237219114","mmvName":"nyc_trips_small_2015_achilio_174061215"},{"datasetName":"nyc_trips","statement":"SELECT payment_type AS a_496932397, passenger_count AS a_237219114, rate_code AS a_216081900, vendor_id AS a_1085970574, SUM(total_amount) AS a_1275013991 FROM `achilio-dev`.`nyc_trips`.`nyc_trips_small_2015` GROUP BY a_496932397, a_237219114, a_216081900, a_1085970574","mmvName":"nyc_trips_small_2015_achilio_562108214"},{"datasetName":"nyc_trips","statement":"SELECT payment_type AS a_496932397, passenger_count AS a_237219114, rate_code AS a_216081900, TIMESTAMP_TRUNC(pickup_datetime, DAY) AS a_1545623398, COUNT(*) AS a_410576920 FROM `achilio-dev`.`nyc_trips`.`nyc_trips_small_2015` GROUP BY a_496932397, a_237219114, a_216081900, a_1545623398","mmvName":"nyc_trips_small_2015_achilio_2058425173"},{"datasetName":"nyc_trips","statement":"SELECT payment_type AS a_496932397, passenger_count AS a_237219114, rate_code AS a_216081900, TIMESTAMP_TRUNC(pickup_datetime, WEEK) AS a_652037144, SUM(tip_amount) AS a_238909520 FROM `achilio-dev`.`nyc_trips`.`nyc_trips_small_2015` GROUP BY a_496932397, a_237219114, a_216081900, a_652037144","mmvName":"nyc_trips_small_2015_achilio_1843135121"},{"datasetName":"nyc_trips","statement":"SELECT payment_type AS a_496932397, passenger_count AS a_237219114, COUNT(*) AS a_410576920 FROM `achilio-dev`.`nyc_trips`.`nyc_trips_small_2015` GROUP BY a_496932397, a_237219114","mmvName":"nyc_trips_small_2015_achilio_814399"},{"datasetName":"nyc_trips","statement":"SELECT payment_type AS a_496932397, passenger_count AS a_237219114, vendor_id AS a_1085970574, SUM(total_amount) AS a_1275013991 FROM `achilio-dev`.`nyc_trips`.`nyc_trips_small_2015` GROUP BY a_496932397, a_237219114, a_1085970574","mmvName":"nyc_trips_small_2015_achilio_1505015812"},{"datasetName":"nyc_trips","statement":"SELECT payment_type AS a_496932397, passenger_count AS a_237219114, TIMESTAMP_TRUNC(pickup_datetime, DAY) AS a_1545623398, COUNT(*) AS a_410576920 FROM `achilio-dev`.`nyc_trips`.`nyc_trips_small_2015` GROUP BY a_496932397, a_237219114, a_1545623398","mmvName":"nyc_trips_small_2015_achilio_1567236043"}]}'
+
+DATA=$(echo $SA |base64)
+
+echo $DATA
+
+JSON_STRING=$( jq -n \
+                  --arg d "$DATA" \
+                  '{"message":{"attributes":{"cmdType":"apply","projectId":"achilio-test"},data: $d},"subscription": "projects/myproject/subscriptions/mysubscription"}' )
+
+echo $JSON_STRING
+
+echo "${JSON_STRING}" | http POST localhost:8080
+
+# echo "{
+#     \"message\": {
+#         \"attributes\": {
+#             \"cmdType\": \"apply\",
+#             \"projectId\": \"achilio-test\"
+#         },
+#         \"data\": \"${DATA}\",
+#         \"messageId\": \"2070443601311540\",
+#         \"message_id\": \"2070443601311540\",
+#         \"publishTime\": \"2021-02-26T19:13:55.749Z\",
+#         \"publish_time\": \"2021-02-26T19:13:55.749Z\"
+#     },
+#    \"subscription\": \"projects/myproject/subscriptions/mysubscription\"
+# }" | http POST localhost:8080
