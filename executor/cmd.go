@@ -42,8 +42,13 @@ func (e *ApplyExecutor) executeShell() error {
 	if err := executeCommand(tmpE.Command); err != nil {
 		return err
 	}
+	// Write service account file
+	err := e.writeServiceAccount(e.Attributes.ServiceAccount.toString())
+	if err != nil {
+		return err
+	}
 	// Create the var file for the terraform module
-	err := e.createVarFile()
+	err = e.createVarFile()
 	if err != nil {
 		return err
 	}
@@ -63,8 +68,13 @@ func (e *DestroyExecutor) executeShell() error {
 	if err := executeCommand(tmpE.Command); err != nil {
 		return err
 	}
+	// Write service account file
+	err := e.writeServiceAccount(e.Attributes.ServiceAccount.toString())
+	if err != nil {
+		return err
+	}
 	// Create the var file for the terraform module
-	err := e.createVarFile()
+	err = e.createVarFile()
 	if err != nil {
 		return err
 	}

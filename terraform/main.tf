@@ -11,13 +11,13 @@ variable "mmvs" {
   }]
 }
 
-variable "access_token" {
+variable "service_account" {
   type = string
 }
 
 provider "google" {
-  project      = var.project_id
-  access_token = var.access_token
+  project     = var.project_id
+  credentials = var.service_account
 }
 
 terraform {
