@@ -25,9 +25,9 @@ func (t *Terraform) init() error {
 	case WORKSPACE:
 		t.Executor = &WorkspaceExecutor{t.Message.Attributes, ""}
 	case APPLY:
-		t.Executor = &ApplyExecutor{t.Message.Attributes, "", nil, ""}
+		t.Executor = &ApplyExecutor{t.Message.Attributes, "", nil, "", ""}
 	case DESTROY:
-		t.Executor = &DestroyExecutor{t.Message.Attributes, "", ""}
+		t.Executor = &DestroyExecutor{t.Message.Attributes, "", "", ""}
 	default:
 		return errors.New("Unsupported command " + t.Message.Attributes.CmdType)
 	}

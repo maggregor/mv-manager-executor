@@ -4,12 +4,14 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 )
 
 type DestroyExecutor struct {
 	Attributes Attributes
 	Command    string
 	VarFile    string // Absolute path to the var file to use
+	SaFile     string
 }
 
 func (e *DestroyExecutor) setCommand() {
@@ -32,10 +34,26 @@ func (e *DestroyExecutor) createVarFile() error {
 	return nil
 }
 
+func (e *DestroyExecutor) writeServiceAccount(sa string) error {
+	varFile, err := os.CreateTemp(os.TempDir(), "terraview-*")
+	if err != nil {
+		fmt.Printf("%s\n", err)
+		return err
+	}
+	log.Println("Creating tmp var file: " + varFile.Name())
+	sa = strings.ReplaceAll(sa, "\n", "\\n")
+	_, err = varFile.WriteString(sa)
+	if err != nil {
+		return err
+	}
+	e.SaFile = varFile.Name()
+	return nil
+}
+
 func (e *DestroyExecutor) toString() string {
 	var r string
 	r = fmt.Sprintf("project_id = %q\n", e.Attributes.ProjectID)
-	r += fmt.Sprintf("access_token = %q\n", e.Attributes.AccessToken)
+	r += fmt.Sprintf("service_account = %q\n", e.SaFile)
 	r += "mmvs = []\n"
 	log.Println(r)
 	return r
