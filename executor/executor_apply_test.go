@@ -7,8 +7,8 @@ import (
 
 // Test setCommand()
 func TestSetCommandApply1(t *testing.T) {
-	a1 := Attributes{AccessToken: "myAccessToken", ProjectID: "myprojectid", Queries: nil}
-	executor := &ApplyExecutor{a1, "", nil, "/tmp/varfile1"}
+	a1 := Attributes{ServiceAccount: "myAccessToken", ProjectID: "myprojectid", Queries: nil}
+	executor := &ApplyExecutor{a1, "", nil, "/tmp/varfile1", ""}
 	expected := "terraform apply -auto-approve -no-color -var-file /tmp/varfile1"
 	executor.setCommand()
 	if executor.Command != expected {
@@ -18,8 +18,8 @@ func TestSetCommandApply1(t *testing.T) {
 
 // Test createVarFile()
 func TestApplyCreateVarFile1(t *testing.T) {
-	a1 := Attributes{AccessToken: "myAccessToken", ProjectID: "myprojectid", Queries: nil}
-	executor := &ApplyExecutor{a1, "", nil, ""}
+	a1 := Attributes{ServiceAccount: "myAccessToken", ProjectID: "myprojectid", Queries: nil}
+	executor := &ApplyExecutor{a1, "", nil, "", ""}
 	executor.createVarFile()
 	if executor.VarFile == "" {
 		log.Fatalf("Var file variable was not set")
@@ -31,11 +31,11 @@ func TestApplyToString1(t *testing.T) {
 	q1 := QueryParameter{DatasetName: "mydataset1", Statement: "SELECT 1", MmvName: "mmv_1234"}
 	q2 := QueryParameter{DatasetName: "mydataset2", Statement: "SELECT 2", MmvName: "mmv_5678"}
 	i1 := []QueryParameter{q1, q2}
-	a1 := Attributes{AccessToken: "myAccessToken", ProjectID: "myprojectid", Queries: i1}
-	executor := &ApplyExecutor{a1, "", i1, ""}
+	a1 := Attributes{ServiceAccount: "myAccessToken", ProjectID: "myprojectid", Queries: i1}
+	executor := &ApplyExecutor{a1, "", i1, "", ""}
 	r1 := executor.toString()
 	expected := `project_id = "myprojectid"
-access_token = "myAccessToken"
+service_account = "myAccessToken"
 mmvs = [
 	{
 		"mmv_name": "mmv_1234",

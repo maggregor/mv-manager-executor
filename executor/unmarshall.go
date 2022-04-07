@@ -5,11 +5,16 @@ import (
 	"fmt"
 )
 
+type MessageContent struct {
+	Sa string           `json:"serviceAccount"`
+	Qs []QueryParameter `json:"queries"`
+}
+
 // UnmarshalJSON Custom unmarshall method for the message Data.
 // Message Data should be a list of 1 entry map, each representing a
 // Materialized view to be created by TerraformExecutor. Key is the dataset name, Value is the query statement
 func (message *Message) UnmarshalJSON(data []byte) (err error) {
-	var queries []QueryParameter
+	var m MessageContent
 	messageData := struct {
 		Data       []byte     `json:"data,omitempty"`
 		Attributes Attributes `json:"attributes,omitempty"`
@@ -18,14 +23,15 @@ func (message *Message) UnmarshalJSON(data []byte) (err error) {
 	if err != nil {
 		return err
 	}
-	err = json.Unmarshal(messageData.Data, &queries)
+	err = json.Unmarshal(messageData.Data, &m)
 	if err != nil {
 		return err
 	}
-	if err = isMessageInvalid(queries); err != nil {
+	if err = isMessageInvalid(m.Qs); err != nil {
 		return err
 	}
-	qs := removeDuplicateQueryParameterInArray(queries)
+	qs := removeDuplicateQueryParameterInArray(m.Qs)
+	message.Attributes.ServiceAccount = m.Sa
 	message.Attributes.Queries = qs
 	message.Attributes.AccessToken = messageData.Attributes.AccessToken
 	message.Attributes.CmdType = messageData.Attributes.CmdType

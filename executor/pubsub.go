@@ -10,10 +10,11 @@ import (
 // Attributes is the payload of the attributes field in the message of a Pub/Sub event.
 // For the Terraform executor to work for Achilio's Terraview, it needs to follow this structure
 type Attributes struct {
-	AccessToken string           `json:"accessToken,omitempty"`
-	ProjectID   string           `json:"projectId"`
-	CmdType     string           `json:"cmdType"`
-	Queries     []QueryParameter `json:"queries"`
+	AccessToken    string           `json:"accessToken,omitempty"`
+	ProjectID      string           `json:"projectId"`
+	CmdType        string           `json:"cmdType"`
+	Queries        []QueryParameter `json:"queries"`
+	ServiceAccount string           `json:"serviceAccount"`
 }
 
 // Message is the payload of the message field of a Pub/Sub event.

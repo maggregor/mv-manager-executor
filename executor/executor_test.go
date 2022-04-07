@@ -72,7 +72,7 @@ func TestInitUnknown(t *testing.T) {
 }
 
 func TestIsExecutorInvalid(t *testing.T) {
-	a := ApplyExecutor{Attributes{}, "", nil, ""}
+	a := ApplyExecutor{Attributes{}, "", nil, "", ""}
 	q1 := QueryParameter{MmvName: "achilio_1234", DatasetName: "mydataset", Statement: ""}
 	q2 := QueryParameter{MmvName: "achilio_1234", DatasetName: "", Statement: "SELECT 1"}
 	q3 := QueryParameter{MmvName: "", DatasetName: "mydataset", Statement: "SELECT 1"}
